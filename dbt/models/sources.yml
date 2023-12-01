@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: public
+    schema: public
+    tables:
+      - name: solar_extended
+      - name: wind_extended
+      - name: storage_extended  
+      - name: storage_units
+      - name: biomass_extended
+      - name: hydro_extended
+      - name: combustion_extended
+      - name: districts_geoboundaries
+      - name: municipalities_geoboundaries

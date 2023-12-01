@@ -1,0 +1,15 @@
+
+verify_marktstammdaten:
+  outputs:
+
+    dev:
+      type: postgres
+      threads: 4
+      host: 127.0.0.1
+      port: 5512
+      user: postgres
+      pass: postgres
+      dbname: verify-marktstammdatenregister
+      schema: public
+
+  target: dev
