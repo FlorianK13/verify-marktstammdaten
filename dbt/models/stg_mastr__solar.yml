@@ -4,32 +4,41 @@ models:
     description: ''
     tests:
       - expect_column_pair_division_to_be_within:
-          name: column_division_stg_mastr__solar__power_gross_power_inverter
+          name: solar_column_division__power_gross_power_inverter
           column_A: power_gross
           column_B: power_inverter
           min_value: 0.05
           max_value: 20
       - expect_column_pair_division_to_be_within:
-          name: column_division_stg_mastr__solar_power_gross_number_modules
+          name: solar_column_division__power_gross_number_modules
           column_A: power_gross
           column_B: number_of_modules
           min_value: 0.05  # 50 Watt per module
           max_value: 0.9  # 900 Watt per module
       - expect_column_pair_values_A_to_be_greater_than_B:
-          name: column_A_larger_B_stg_mastr__solar_power_gross_larger_net
+          name: solar_A_larger_B__power_gross_power_net
           column_A: power_gross
           column_B: power_net
           or_equal: True
       - expect_column_pair_values_A_to_be_greater_than_B:
-          name: column_A_larger_B_stg_mastr__solar_power_inverter_larger_net
+          name: solar_A_larger_B_power__inverter_power_net
           column_A: power_inverter
           column_B: power_net
           or_equal: True
       - expect_point_to_lie_in_area:
+          name: solar_point_in_area__district
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: district_id
-          model_area: ref('stg_districts__area') # '"energy_database"."data_staging"."stg_districts__area"'
+          model_area: ref('stg_districts__area') 
           model_area_column_id: district_id
+          model_area_column_area_geometry: geometry_array
+          area_buffer_zone: 0.015
+      - expect_point_to_lie_in_area:
+          name: solar_point_in_area__municipality
+          model_point_column_point_geometry: coordinate
+          model_point_column_area_id: municipality_id
+          model_area: ref('stg_municipality__area') 
+          model_area_column_id: municipality_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
     columns:
@@ -43,7 +52,7 @@ models:
               config:
                 severity: error
           - expect_column_values_to_match_regex:
-              name: regex_stg_mastr__solar_mastr_id
+              name: solar_regex__mastr_id
               regex: "^[A-Z]{3}\\d{12}$"
         data_type: character varying
       - name: operating_status
@@ -51,7 +60,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              name: accepted_values_stg_mastr__solar_operating_status
+              name: solar_accepted_values__operating_status
               values: ['In Betrieb', 'In Planung', 'Endgültig stillgelegt', 'Vorübergehend stillgelegt']
         data_type: character varying
       - name: grid_operator_inspection
@@ -62,7 +71,7 @@ models:
         data_type: integer
         tests:
           - expect_column_values_to_be_between:
-              name: value_between_stg_mastr__solar_installation_year
+              name: solar_value_between__installation_year
               min_value: 1980  
               max_value: 2030 
               row_condition: "installation_year is not null" 
@@ -83,7 +92,7 @@ models:
         description: ''
         tests:
           - expect_column_values_to_be_between:
-              name: value_between_stg_mastr__solar_power_gross
+              name: solar_value_between__power_gross
               min_value: 0 # 100MW
               max_value: 500000 # 500MW, at 11-2023 the largest system was 150MW
       - name: power_inverter
@@ -115,7 +124,7 @@ models:
         tests:
           - not_null
           - expect_column_values_to_match_regex:
-              name: regex_stg_mastr__solar_municipality_key
+              name: solar_regex__municipality_key
               regex: "^\\d{8}$"
         data_type: character varying
       - name: municipality
@@ -131,7 +140,7 @@ models:
         description: ''
         tests:
           - expect_column_values_to_match_regex:
-              name: regex_stg_mastr__solar_zip_code
+              name: solar_regex__zip_code
               regex: "^\\d{5}$"
         data_type: character varying
       - name: coordinate
