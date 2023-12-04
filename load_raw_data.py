@@ -9,13 +9,8 @@ from sqlalchemy import create_engine
 
 def main():
     """Download the Marktstammdatenregister and save it to the database that was created by docker-compose."""
-    POSTGRES_DB = "verify-marktstammdatenregister"
-    POSTGRES_USER = "postgres"
-    POSTGRES_PASSWORD = "postgres"
-    PORT = "5512"
-    engine = create_engine(
-        f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:{PORT}/{POSTGRES_DB}"
-    )
+
+    engine = get_engine()
     download_mastr(engine)
     download_districts_geoboundaries(engine=engine)
     download_municipalities_geoboundaries(engine=engine)
@@ -24,6 +19,16 @@ def main():
 def download_mastr(engine):
     db = Mastr(engine=engine)
     db.download(date="existing")
+
+
+def get_engine():
+    POSTGRES_DB = "verify-marktstammdatenregister"
+    POSTGRES_USER = "postgres"
+    POSTGRES_PASSWORD = "postgres"
+    PORT = "5512"
+    return create_engine(
+        f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:{PORT}/{POSTGRES_DB}"
+    )
 
 
 def download_districts_geoboundaries(engine) -> gpd.GeoDataFrame:
