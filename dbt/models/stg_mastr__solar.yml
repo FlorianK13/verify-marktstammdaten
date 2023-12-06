@@ -90,7 +90,7 @@ models:
           - not_null:
               name: solar_not_null__power_net
           - expect_column_values_to_be_between:
-              name: solar_value_between__power_gross
+              name: solar_value_between__power_net
               min_value: 0
               max_value: 500000 # 500MW, at 11-2023 the largest system was 150MW
       - name: power_gross
