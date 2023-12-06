@@ -90,6 +90,9 @@ models:
       - name: power_net
         data_type: double precision
         description: ''
+        tests:
+          - not_null:
+              name: solar_not_null__power_net
       - name: power_gross
         data_type: double precision
         description: ''
