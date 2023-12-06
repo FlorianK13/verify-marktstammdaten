@@ -13,7 +13,7 @@ def main():
     sqlite_engine = create_engine(f"sqlite:///{sqlite_database_name}")
     if os.path.exists(sqlite_database_name):
         os.remove(sqlite_database_name)
-    failed_tests_schema = "public_dbt_test__audit"
+    failed_tests_schema = "dbt_dbt_test__audit"
     inspector = inspect(postgres_engine)
     test_tables = inspector.get_table_names(schema=failed_tests_schema)
 
