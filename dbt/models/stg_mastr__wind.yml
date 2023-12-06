@@ -71,6 +71,8 @@ models:
         description: ''
         data_type: double precision
         tests:
+          - not_null:
+              name: wind_power_net__not_null
           - expect_column_values_to_be_between:
               name: wind_value_between__power
               min_value: 0
