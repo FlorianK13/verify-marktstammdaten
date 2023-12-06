@@ -10,6 +10,6 @@ verify_marktstammdaten:
       user: postgres
       pass: postgres
       dbname: verify-marktstammdatenregister
-      schema: public
+      schema: dbt
 
   target: dev
