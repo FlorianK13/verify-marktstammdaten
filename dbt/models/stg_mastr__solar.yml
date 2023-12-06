@@ -61,7 +61,7 @@ models:
         description: ''
         tests:
           - not_null:
-            name: solar_not_null__operating_status
+              name: solar_not_null__operating_status
           - accepted_values:
               name: solar_accepted_values__operating_status
               values: ['In Betrieb', 'In Planung', 'Endgültig stillgelegt', 'Vorübergehend stillgelegt']
