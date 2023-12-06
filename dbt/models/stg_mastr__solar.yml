@@ -37,7 +37,7 @@ models:
           name: solar_point_in_area__municipality
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: municipality_id
-          model_area: ref('stg_municipality__area') 
+          model_area: ref('stg_municipalities__area') 
           model_area_column_id: municipality_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
@@ -46,9 +46,11 @@ models:
         description: ''
         tests:
           - unique:
+              name: solar_unique__mastr_id
               config:
                 severity: error
           - not_null:
+              name: solar_not_null__mastr_id
               config:
                 severity: error
           - expect_column_values_to_match_regex:
@@ -58,7 +60,8 @@ models:
       - name: operating_status
         description: ''
         tests:
-          - not_null
+          - not_null:
+            name: solar_not_null__operating_status
           - accepted_values:
               name: solar_accepted_values__operating_status
               values: ['In Betrieb', 'In Planung', 'Endgültig stillgelegt', 'Vorübergehend stillgelegt']
@@ -122,7 +125,8 @@ models:
       - name: municipality_id
         description: ''
         tests:
-          - not_null
+          - not_null:
+              name: solar_not_null__municipality_id
           - expect_column_values_to_match_regex:
               name: solar_regex__municipality_key
               regex: "^\\d{8}$"
