@@ -10,7 +10,7 @@
 %}
 WITH areas AS (
     SELECT 
-        {{ model_area_column_id }},
+        {{ model_area_column_id }} as area_column_id,
         ST_BUFFER({{ model_area_column_area_geometry }}, {{ area_buffer_zone }}) AS area_geometry_with_buffer
     FROM {{ model_area }}
 ),
@@ -27,7 +27,7 @@ join_areas_on_points AS (
     FROM 
         points
     JOIN areas
-    ON points.{{ model_point_column_area_id }} = areas.{{ model_area_column_id }}
+    ON points.{{ model_point_column_area_id }} = areas.area_column_id
 )
 
 SELECT 
