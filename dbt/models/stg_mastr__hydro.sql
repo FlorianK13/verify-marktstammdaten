@@ -42,7 +42,9 @@ final as (
         "Gemeinde" as municipality,
         left("Gemeindeschluessel", 5) as district_id,
         "Landkreis" as district,
-        "Postleitzahl" as zip_code,     
+        "Postleitzahl" as zip_code,  
+        "Laengengrad" as longitude,
+        "Breitengrad" as latitude,   
         st_setsrid(st_point("Laengengrad", "Breitengrad"), 4326) as coordinate
     from source
 )

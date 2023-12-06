@@ -57,6 +57,8 @@ renamed_extended as (
         left("Gemeindeschluessel", 5) as district_id,
         "Landkreis" as district,
         "Postleitzahl" as zip_code,
+        "Laengengrad" as longitude,
+        "Breitengrad" as latitude,
         st_setsrid(st_point("Laengengrad", "Breitengrad"), 4326) as coordinate
     from source_extended
 
@@ -88,6 +90,8 @@ storage_units as (
         re.district_id,
         re.district,
         re.zip_code,
+        re.longitude,
+        re.latitude,
         re.coordinate
     from renamed_extended as re
     left join
