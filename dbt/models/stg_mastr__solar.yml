@@ -47,12 +47,8 @@ models:
         tests:
           - unique:
               name: solar_unique__mastr_id
-              config:
-                severity: error
           - not_null:
               name: solar_not_null__mastr_id
-              config:
-                severity: error
           - expect_column_values_to_match_regex:
               name: solar_regex__mastr_id
               regex: "^[A-Z]{3}\\d{12}$"
@@ -93,14 +89,13 @@ models:
         tests:
           - not_null:
               name: solar_not_null__power_net
-      - name: power_gross
-        data_type: double precision
-        description: ''
-        tests:
           - expect_column_values_to_be_between:
               name: solar_value_between__power_gross
               min_value: 0
               max_value: 500000 # 500MW, at 11-2023 the largest system was 150MW
+      - name: power_gross
+        data_type: double precision
+        description: ''         
       - name: power_inverter
         data_type: double precision
         description: ''

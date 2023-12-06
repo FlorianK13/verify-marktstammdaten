@@ -26,12 +26,8 @@ models:
         tests:
           - unique:
               name: biomass_unique__mastr_id
-              config:
-                severity: error
           - not_null:
               name: biomass_not_null__mastr_id
-              config:
-                severity: error
           - expect_column_values_to_match_regex:
               name: biomass_regex__mastr_id
               regex: "^[A-Z]{3}\\d{12}$"
