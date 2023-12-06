@@ -1,0 +1,117 @@
+version: 2
+models:
+  - name: stg_mastr__biomass
+    description: ''
+    tests:
+      - expect_point_to_lie_in_area:
+          name: biomass_point_in_area__district
+          model_point_column_point_geometry: coordinate
+          model_point_column_area_id: district_id
+          model_area: ref('stg_districts__area') 
+          model_area_column_id: district_id
+          model_area_column_area_geometry: geometry_array
+          area_buffer_zone: 0.015
+      - expect_point_to_lie_in_area:
+          name: biomass_point_in_area__municipality
+          model_point_column_point_geometry: coordinate
+          model_point_column_area_id: municipality_id
+          model_area: ref('stg_municipalities__area') 
+          model_area_column_id: municipality_id
+          model_area_column_area_geometry: geometry_array
+          area_buffer_zone: 0.015
+    columns:
+      - name: mastr_id
+        description: ''
+        data_type: character varying
+        tests:
+          - unique:
+              name: biomass_unique__mastr_id
+              config:
+                severity: error
+          - not_null:
+              name: biomass_not_null__mastr_id
+              config:
+                severity: error
+          - expect_column_values_to_match_regex:
+              name: biomass_regex__mastr_id
+              regex: "^[A-Z]{3}\\d{12}$"
+      - name: operating_status
+        data_type: character varying
+        description: ''
+        tests:
+          - not_null:
+              name: biomass_not_null__operating_status
+          - accepted_values:
+              name: biomass_accepted_values__operating_status
+              values: ['In Betrieb', 'In Planung', 'Endgültig stillgelegt', 'Vorübergehend stillgelegt']
+      - name: grid_operator_inspection
+        data_type: character varying
+        description: ''
+      - name: installation_year
+        description: ''
+        data_type: integer
+        tests:
+          - expect_column_values_to_be_between:
+              name: biomass_value_between__installation_year
+              min_value: 1950  
+              max_value: 2030 
+              row_condition: "installation_year is not null" 
+      - name: commissioning_date
+        description: ''
+        data_type: date
+      - name: planned_commissioning_date
+        description: ''
+        data_type: date
+      - name: download_date
+        description: ''
+        data_type: date
+      - name: power
+        description: ''
+        data_type: double precision
+        tests:
+          - not_null:
+              name: biomass_not_null__power
+          - expect_column_values_to_be_between:
+              name: biomass_value_between__power
+              min_value: 0
+              max_value: 150000 # 150MW, at 11-2023 the largest system was 90MW
+      - name: fuel
+        data_type: character varying
+        description: ''
+      - name: fuel_type
+        data_type: character varying
+        description: ''
+      - name: combustion_technology
+        data_type: character varying
+        description: ''
+      - name: unit_owner_mastr_id
+        description: ''
+        data_type: character varying
+      - name: municipality_id
+        description: ''
+        data_type: character varying
+        tests:
+          - not_null:
+              name: biomass_not_null__municipality_id
+          - expect_column_values_to_match_regex:
+              name: biomass_regex__municipality_key
+              regex: "^\\d{8}$"
+      - name: municipality
+        description: ''
+        data_type: character varying
+      - name: district_id
+        description: ''
+        data_type: text
+      - name: district
+        description: ''
+        data_type: character varying
+      - name: zip_code
+        description: ''
+        data_type: character varying
+        tests:
+          - expect_column_values_to_match_regex:
+              name: biomass_regex__zip_code
+              regex: "^\\d{5}$"
+      - name: coordinate
+        data_type: USER-DEFINED
+        description: ''
