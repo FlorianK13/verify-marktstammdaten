@@ -13,6 +13,7 @@ models:
           name: wind_point_in_area__district
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: district_id
+          model_point_where_statement: position = 'Windkraft an Land'
           model_area: ref('stg_districts__area') 
           model_area_column_id: district_id
           model_area_column_area_geometry: geometry_array
@@ -21,6 +22,7 @@ models:
           name: wind_point_in_area__municipality
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: municipality_id
+          model_point_where_statement: position = 'Windkraft an Land'
           model_area: ref('stg_municipalities__area') 
           model_area_column_id: municipality_id
           model_area_column_area_geometry: geometry_array
