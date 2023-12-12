@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 import sqlalchemy
-from sqlalchemy import create_engine, inspect
+from sqlalchemy import create_engine, inspect, text
 
 from load_raw_data import get_engine
 
@@ -22,22 +22,29 @@ def main():
         df = pd.read_sql(query, con=postgres_engine)
         if len(df) == 0:
             continue
-        test_name = get_test_from_table_name(table)
-        technology = get_technology_from_table_name(table)
-        df["failed_test"] = test_name
-        df.drop(columns=["coordinate"], inplace=True)
-        try:
-            df.to_sql(name=technology, con=sqlite_engine, if_exists="append")
-        except sqlalchemy.exc.OperationalError:
-            df = delete_columns_from_df_that_arenot_in_database(
-                df=df, sqlite_engine=sqlite_engine, table=technology
-            )
-            df.to_sql(name=technology, con=sqlite_engine, if_exists="append")
+        add_failed_tests_to_sqlite(df, table, engine=sqlite_engine)
+    create_mastr_metadata_file(
+        input_engine=postgres_engine, output_engine=sqlite_engine
+    )
 
 
 def get_test_from_table_name(table_name: str):
     first_underscore_index = table_name.index("_")
     return table_name[first_underscore_index + 1 :]
+
+
+def add_failed_tests_to_sqlite(df, table, engine):
+    test_name = get_test_from_table_name(table)
+    technology = get_technology_from_table_name(table)
+    df["failed_test"] = test_name
+    df.drop(columns=["coordinate"], inplace=True)
+    try:
+        df.to_sql(name=technology, con=engine, if_exists="append")
+    except sqlalchemy.exc.OperationalError:
+        df = delete_columns_from_df_that_arenot_in_database(
+            df=df, sqlite_engine=engine, table=technology
+        )
+        df.to_sql(name=technology, con=engine, if_exists="append")
 
 
 def get_technology_from_table_name(table_name: str):
@@ -55,6 +62,41 @@ def delete_columns_from_df_that_arenot_in_database(df, sqlite_engine, table):
     )
     df.drop(columns=columns_to_delete, inplace=True)
     return df
+
+
+def create_mastr_metadata_file(input_engine, output_engine):
+    tables = [
+        "stg_mastr__solar",
+        "stg_mastr__biomass",
+        "stg_mastr__wind",
+        "stg_mastr__hydro",
+        "stg_mastr__storages",
+        "stg_mastr__combustion",
+    ]
+    metadata_df = pd.DataFrame(
+        columns=["table_name", "number_rows", "number_rows_with_coordinates"]
+    )
+    for table in tables:
+        query = text(f'SELECT COUNT(*) FROM "dbt"."{table}"')
+        number_rows = input_engine.connect().execute(query).fetchone()
+        query = text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL'
+        )
+        number_rows_with_coordinates = input_engine.connect().execute(query).fetchone()
+        metadata_df = pd.concat(
+            [
+                metadata_df,
+                pd.DataFrame(
+                    {
+                        "table_name": [table],
+                        "number_rows": [number_rows[0]],
+                        "number_rows_with_coordinates": number_rows_with_coordinates[0],
+                    }
+                ),
+            ],
+        )
+
+    metadata_df.to_sql("metadata", con=output_engine, if_exists="replace", index=False)
 
 
 if __name__ == "__main__":
