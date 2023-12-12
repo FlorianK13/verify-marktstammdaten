@@ -2,3 +2,4 @@ open-mastr
 geopandas
 SQLAlchemy
 datasette
+dbt-postgres
