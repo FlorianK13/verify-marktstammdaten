@@ -77,26 +77,60 @@ def create_mastr_metadata_file(input_engine, output_engine):
         columns=["table_name", "number_rows", "number_rows_with_coordinates"]
     )
     for table in tables:
-        query = text(f'SELECT COUNT(*) FROM "dbt"."{table}"')
-        number_rows = input_engine.connect().execute(query).fetchone()
-        query = text(
-            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL'
-        )
-        number_rows_with_coordinates = input_engine.connect().execute(query).fetchone()
-        metadata_df = pd.concat(
-            [
-                metadata_df,
-                pd.DataFrame(
-                    {
-                        "table_name": [table],
-                        "number_rows": [number_rows[0]],
-                        "number_rows_with_coordinates": number_rows_with_coordinates[0],
-                    }
-                ),
-            ],
+        if table == "stg_mastr__wind":
+            metadata_df = add_metadata_to_dataframe(
+                table=table,
+                engine=input_engine,
+                metadata_df=metadata_df,
+                where_condition="position = 'Windkraft an Land'",
+                table_name_replacement="wind_onshore",
+            )
+            metadata_df = add_metadata_to_dataframe(
+                table=table,
+                engine=input_engine,
+                metadata_df=metadata_df,
+                where_condition="position = 'Windkraft auf See'",
+                table_name_replacement="wind_offshore",
+            )
+
+        metadata_df = add_metadata_to_dataframe(
+            table=table, engine=input_engine, metadata_df=metadata_df
         )
 
     metadata_df.to_sql("metadata", con=output_engine, if_exists="replace", index=False)
+
+
+def add_metadata_to_dataframe(
+    table, engine, metadata_df, where_condition=None, table_name_replacement=None
+):
+    query = (
+        text(f'SELECT COUNT(*) FROM "dbt"."{table}"')
+        if not where_condition
+        else text(f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE {where_condition}')
+    )
+    number_rows = engine.connect().execute(query).fetchone()
+    query = (
+        text(f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL')
+        if not where_condition
+        else text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL AND {where_condition}'
+        )
+    )
+    number_rows_with_coordinates = engine.connect().execute(query).fetchone()
+    table_name = table if not table_name_replacement else table_name_replacement
+    metadata_df = pd.concat(
+        [
+            metadata_df,
+            pd.DataFrame(
+                {
+                    "table_name": [table_name],
+                    "number_rows": [number_rows[0]],
+                    "number_rows_with_coordinates": number_rows_with_coordinates[0],
+                }
+            ),
+        ],
+    )
+    return metadata_df
 
 
 if __name__ == "__main__":
