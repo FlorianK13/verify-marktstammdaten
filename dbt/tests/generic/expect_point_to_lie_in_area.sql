@@ -2,6 +2,7 @@
     model, 
     model_point_column_point_geometry,
     model_point_column_area_id,
+    model_point_where_statement,
     model_area,
     model_area_column_id, 
     model_area_column_area_geometry, 
@@ -19,6 +20,9 @@ points AS (
     SELECT *
     FROM {{ model }}
     WHERE {{ model_point_column_point_geometry }} IS NOT NULL
+    {% if model_point_where_statement %}
+        AND {{ model_point_where_statement }}
+    {% endif %}
 ),
 
 join_areas_on_points AS (
