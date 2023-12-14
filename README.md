@@ -5,6 +5,7 @@ Verifying and testing data in the German Energy dataset "Marktstammdatenregister
 
 1. Create a conda environment called `verify-marktstammdaten` and activate it
 1. Run `pip install -r requirements.txt`
+1. Run `datasette install datasette-dashboards`
 1. Run `docker-compose up`
 1. Run `python load_raw_data.py`
 1. Run `./run_tests.sh`
