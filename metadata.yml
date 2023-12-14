@@ -10,6 +10,7 @@ plugins:
         - [wrong-location-solar, wrong-location-hydro]
         - [wrong-division-gross-inverter-solar-number, wrong-division-gross-inverter-solar-chart]
         - [wrong-division-gross-inverter-storage-number, wrong-division-gross-inverter-storage-chart]
+        - [wrong-installation-year, wrong-installation-year]
         - [data-license-note, data-license-note]
       charts:
         date-chart:
@@ -296,6 +297,74 @@ plugins:
               x: { field: 'Power of installed Storage in W', type: quantitative, scale: {type: log} }
               y: { field: "Power Inverter in W", type: quantitative, scale: {type: log}  }
               size: { field: "Net Power in W", type: quantitative }
+        
+        wrong-installation-year:
+          title: Units that were installed to early or where the planned installation year is to far in the future.
+          db: failed_tests
+          query: >-
+            SELECT 
+              count(installation_year) as "number of installed units",
+              CAST(installation_year AS INT) AS "installation year",
+              'solar' AS technology
+            FROM solar
+            WHERE failed_test = 'value_between__installation_year'
+            GROUP BY "installation year"
+            UNION ALL
+            SELECT 
+              count(installation_year) as "number of installed units",
+              CAST(installation_year AS INT) AS "installation year",
+              'wind' AS technology
+            FROM wind
+            WHERE failed_test = 'value_between__installation_year'
+            GROUP BY "installation year"
+            UNION ALL
+            SELECT 
+              count(installation_year) as "number of installed units",
+              CAST(installation_year AS INT) AS "installation year",
+              'biomass' AS technology
+            FROM biomass
+            WHERE failed_test = 'value_between__installation_year'
+            GROUP BY "installation year"
+            UNION ALL
+            SELECT 
+              count(installation_year) as "number of installed units",
+              CAST(installation_year AS INT) AS "installation year",
+              'storage' AS technology
+            FROM storage
+            WHERE failed_test = 'value_between__installation_year'
+            GROUP BY "installation year"
+            UNION ALL
+            SELECT 
+              count(installation_year) as "number of installed units",
+              CAST(installation_year AS INT) AS "installation year",
+              'hydro' AS technology
+            FROM hydro
+            WHERE failed_test = 'value_between__installation_year'
+            GROUP BY "installation year"
+            UNION ALL
+            SELECT 
+              count(installation_year) as "number of installed units",
+              CAST(installation_year AS INT) AS "installation year",
+              'combustion' AS technology
+            FROM combustion
+            WHERE failed_test = 'value_between__installation_year'
+            GROUP BY "installation year"
+           
+                         
+          library: vega-lite
+          display:
+            mark: { type: bar, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              x: { field: installation year, type: quantitative }
+              y: { field: number of installed units, type: quantitative }
+              color: { field: technology, type: nominal }
+              opacity:
+                condition: { param: highlight, value: 1 }
+                value: 0.2
 
         
 
