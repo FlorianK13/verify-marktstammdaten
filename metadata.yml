@@ -1,21 +1,24 @@
 plugins:
   datasette-dashboards:
     verify-marktstammdaten:
-      title: My Dashboard
-      description: Showing some nice metrics
+      title: Verifying data in the German Core Energy dataset "Marktstammdatenregister"
+      description: >
+          The data has the license Datenlizenz Deutschland - Namensnennung - Version 2.0 (DL-DE-BY-2.0)
+          Copyright: Marktstammdatenregister - /© Bundesnetzagentur fuer Elektrizitaet, Gas, Telekommunikation, Post und Eisenbahnen | DL-DE-BY-2.0
+          
       layout:
-        - [wrong-biomass, wrong-solar]
+        - [date-chart, wrong-solar]
         - [wrong-location-biomass, wrong-location-wind]
       charts:
-        wrong-biomass:
-          title: Share of biomass plants that contain erroneuos data
+        date-chart:
+          title: The shown data is from
           db: failed_tests
-          query: SELECT ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share FROM biomass
+          query: SELECT download_date from biomass LIMIT 1
           library: metric
           display:
-            field: share
+            field: download_date
             prefix:
-            suffix: "%"
+            suffix:
         wrong-solar:
           title: Share of solar plants that contain erroneuos data
           db: failed_tests
