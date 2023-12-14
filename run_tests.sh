@@ -1,6 +1,6 @@
 #!/bin/bash
 
-conda activate dapro # this environment needs to have the needed packages installed
+conda activate verify-marktstammdaten # this environment needs to have the needed packages installed
 
 cd dbt
 
