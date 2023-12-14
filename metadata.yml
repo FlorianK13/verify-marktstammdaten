@@ -8,6 +8,7 @@ plugins:
         - [wrong-location-note, wrong-location-note]
         - [wrong-location-biomass, wrong-location-wind]
         - [wrong-location-solar, wrong-location-hydro]
+        - [wrong-division-gross-inverter-solar-number, wrong-division-gross-inverter-solar-chart]
         - [data-license-note, data-license-note]
       charts:
         date-chart:
@@ -213,6 +214,43 @@ plugins:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
         
+        wrong-division-gross-inverter-solar-number:
+          title: Number of solar units that have non-matching sizes of inverter and installed PV capacity
+          db: failed_tests
+          query: >-
+            SELECT COUNT(*) as count from solar 
+            WHERE failed_test = 'column_division__power_gross_power_inverter'
+          library: metric
+          display:
+            field: count
+            prefix:
+            suffix:
+
+        wrong-division-gross-inverter-solar-chart:
+          title: Solar units that have erronous power gross or power inverter.
+          db: failed_tests
+          query: >-
+            SELECT 
+              power_gross as "Power of installed Modules in W",
+              power_inverter as "Power Inverter in W",
+              power_net as "Net Power in W"
+            FROM solar
+            WHERE failed_test = 'column_division__power_gross_power_inverter'
+            LIMIT 1000
+            
+                         
+          library: vega-lite
+          display:
+            mark: { type: point, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              x: { field: 'Power of installed Modules in W', type: quantitative, scale: {type: log} }
+              y: { field: "Power Inverter in W", type: quantitative, scale: {type: log}  }
+              size: { field: "Net Power in W", type: quantitative }
+
         data-license-note:
           library: markdown
           display: |-
