@@ -7,7 +7,7 @@ plugins:
           Copyright: Marktstammdatenregister - /© Bundesnetzagentur fuer Elektrizitaet, Gas, Telekommunikation, Post und Eisenbahnen | DL-DE-BY-2.0
           
       layout:
-        - [date-chart, wrong-solar]
+        - [date-chart, date-chart]
         - [wrong-location-biomass, wrong-location-wind]
       charts:
         date-chart:
@@ -19,15 +19,6 @@ plugins:
             field: download_date
             prefix:
             suffix:
-        wrong-solar:
-          title: Share of solar plants that contain erroneuos data
-          db: failed_tests
-          query: SELECT ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share FROM solar
-          library: metric
-          display:
-            field: share
-            prefix:
-            suffix: "%"
         
         wrong-location-wind:
           title: Share of units that have missmatching coordinates and adresse.
