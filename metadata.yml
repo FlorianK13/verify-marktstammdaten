@@ -2,13 +2,13 @@ plugins:
   datasette-dashboards:
     verify-marktstammdaten:
       title: Verifying data in the German Core Energy dataset "Marktstammdatenregister"
-      description: >
-          The data has the license Datenlizenz Deutschland - Namensnennung - Version 2.0 (DL-DE-BY-2.0)
-          Copyright: Marktstammdatenregister - /© Bundesnetzagentur fuer Elektrizitaet, Gas, Telekommunikation, Post und Eisenbahnen | DL-DE-BY-2.0
-          
+      description: Some Description     
       layout:
         - [date-chart, date-chart]
+        - [wrong-location-note, wrong-location-note]
         - [wrong-location-biomass, wrong-location-wind]
+        - [wrong-location-solar, wrong-location-hydro]
+        - [data-license-note, data-license-note]
       charts:
         date-chart:
           title: The shown data is from
@@ -19,7 +19,13 @@ plugins:
             field: download_date
             prefix:
             suffix:
-        
+
+        wrong-location-note:
+          library: markdown
+          display: |-
+            # Location errors
+            Sometimes the coordinates do not match the named district or municipality.
+          
         wrong-location-wind:
           title: Share of units that have missmatching coordinates and adresse.
           db: failed_tests
@@ -112,4 +118,105 @@ plugins:
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
+          
+        wrong-location-solar:
+          title: Share of units that have missmatching coordinates and adresse.
+          db: failed_tests
+          query: >-
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
+              ' ' AS solar,
+              'district' AS Kategorie
+            FROM solar
+            WHERE failed_test = 'point_in_area__district'
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
+              '  ' AS solar,
+              'district, DSO approved' AS Kategorie
+            FROM solar
+            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
+              '   ' AS solar,
+              'municipality' AS Kategorie
+            FROM solar
+            WHERE failed_test = 'point_in_area__municipality' 
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
+              '    ' AS solar,
+              'municipality, DSO approved' AS Kategorie
+            FROM solar
+            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+                         
+          library: vega-lite
+          display:
+            mark: { type: bar, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              x: { field: solar, type: nominal }
+              y: { field: share, type: quantitative  }
+              color: { field: Kategorie, type: nominal }
+              opacity:
+                condition: { param: highlight, value: 1 }
+                value: 0.2
         
+        wrong-location-hydro:
+          title: Share of units that have missmatching coordinates and adresse.
+          db: failed_tests
+          query: >-
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
+              ' ' AS hydro,
+              'district' AS Kategorie
+            FROM hydro
+            WHERE failed_test = 'point_in_area__district'
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
+              '  ' AS hydro,
+              'district, DSO approved' AS Kategorie
+            FROM hydro
+            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
+              '   ' AS hydro,
+              'municipality' AS Kategorie
+            FROM hydro
+            WHERE failed_test = 'point_in_area__municipality' 
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
+              '    ' AS hydro,
+              'municipality, DSO approved' AS Kategorie
+            FROM hydro
+            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+                         
+          library: vega-lite
+          display:
+            mark: { type: bar, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              x: { field: hydro, type: nominal }
+              y: { field: share, type: quantitative  }
+              color: { field: Kategorie, type: nominal }
+              opacity:
+                condition: { param: highlight, value: 1 }
+                value: 0.2
+        
+        data-license-note:
+          library: markdown
+          display: |-
+            # Data License
+            > The data has the license **Datenlizenz Deutschland - Namensnennung - Version 2.0** (DL-DE-BY-2.0).
+            Copyright: [Marktstammdatenregister](https://www.marktstammdatenregister.de/MaStR) - Bundesnetzagentur f&uuml;r Elektrizit&auml;t, Gas, Telekommunikation, Post und Eisenbahnen | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0)
+
