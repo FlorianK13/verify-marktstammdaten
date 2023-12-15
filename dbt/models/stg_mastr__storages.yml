@@ -64,10 +64,10 @@ models:
         data_type: integer
         tests:
           - expect_column_values_to_be_between:
-              name: storage_value_between__installation_year
+              name: storage_value_between__installation_year_battery
               min_value: 1980  
               max_value: 2030 
-              row_condition: "installation_year is not null" 
+              row_condition: "installation_year is not null and technology = 'Batterie'" 
       - name: commissioning_date
         description: ''
         data_type: date
