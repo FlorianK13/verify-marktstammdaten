@@ -43,20 +43,34 @@ plugins:
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '  ' AS "wind onshore",
+              'district, active units' AS Kategorie
+            FROM wind 
+            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
+              '   ' AS "wind onshore",
               'district, DSO approved' AS Kategorie
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
-              '   ' AS "wind onshore",
+              '    ' AS "wind onshore",
+              'district, active units, DSO approved' AS Kategorie
+            FROM wind 
+            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 1
+            UNION ALL
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
+              '     ' AS "wind onshore",
               'municipality' AS Kategorie
             FROM wind 
             WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
-              '    ' AS "wind onshore",
+              '      ' AS "wind onshore",
               'municipality, DSO approved' AS Kategorie
             FROM wind 
             WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1                         
@@ -303,52 +317,58 @@ plugins:
           db: failed_tests
           query: >-
             SELECT 
-              count(installation_year) as "number of installed units",
-              CAST(installation_year AS INT) AS "installation year",
+              sum(power_net) as "Power of installed units in kW",
+              CAST(installation_year AS INT) AS "Installation year",
               'solar' AS technology
             FROM solar
             WHERE failed_test = 'value_between__installation_year'
-            GROUP BY "installation year"
+            AND "Installation year" < 2023
+            GROUP BY "Installation year"
             UNION ALL
             SELECT 
-              count(installation_year) as "number of installed units",
-              CAST(installation_year AS INT) AS "installation year",
+              sum(power) as "Power of installed units in kW",
+              CAST(installation_year AS INT) AS "Installation year",
               'wind' AS technology
             FROM wind
             WHERE failed_test = 'value_between__installation_year'
-            GROUP BY "installation year"
+            AND "Installation year" < 2023
+            GROUP BY "Installation year"
             UNION ALL
             SELECT 
-              count(installation_year) as "number of installed units",
-              CAST(installation_year AS INT) AS "installation year",
+              sum(power) as "Power of installed units in kW",
+              CAST(installation_year AS INT) AS "Installation year",
               'biomass' AS technology
             FROM biomass
             WHERE failed_test = 'value_between__installation_year'
-            GROUP BY "installation year"
+            AND "Installation year" < 2023
+            GROUP BY "Installation year"
             UNION ALL
             SELECT 
-              count(installation_year) as "number of installed units",
-              CAST(installation_year AS INT) AS "installation year",
-              'storage' AS technology
+              sum(power_net) as "Power of installed units in kW",
+              CAST(installation_year AS INT) AS "Installation year",
+              'battery storage' AS technology
             FROM storage
-            WHERE failed_test = 'value_between__installation_year'
-            GROUP BY "installation year"
+            WHERE failed_test = 'value_between__installation_year_battery'
+            AND "Installation year" < 2023
+            GROUP BY "Installation year"
             UNION ALL
             SELECT 
-              count(installation_year) as "number of installed units",
-              CAST(installation_year AS INT) AS "installation year",
+              sum(power) as "Power of installed units in kW",
+              CAST(installation_year AS INT) AS "Installation year",
               'hydro' AS technology
             FROM hydro
             WHERE failed_test = 'value_between__installation_year'
-            GROUP BY "installation year"
+            AND "Installation year" < 2023
+            GROUP BY "Installation year"
             UNION ALL
             SELECT 
-              count(installation_year) as "number of installed units",
-              CAST(installation_year AS INT) AS "installation year",
+              sum(power) as "Power of installed units in kW",
+              CAST(installation_year AS INT) AS "Installation year",
               'combustion' AS technology
             FROM combustion
             WHERE failed_test = 'value_between__installation_year'
-            GROUP BY "installation year"
+            AND "Installation year" < 2023
+            GROUP BY "Installation year"
            
                          
           library: vega-lite
@@ -359,8 +379,8 @@ plugins:
                 select: { fields: [source], type: point, "on": mouseover }
                 bind: legend
             encoding:
-              x: { field: installation year, type: quantitative }
-              y: { field: number of installed units, type: quantitative }
+              x: { field: Installation year, type: quantitative }
+              y: { field: Power of installed units in kW, type: quantitative }
               color: { field: technology, type: nominal }
               opacity:
                 condition: { param: highlight, value: 1 }
