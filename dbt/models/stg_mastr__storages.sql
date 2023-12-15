@@ -48,6 +48,7 @@ renamed_extended as (
         "Nettonennleistung" as power_net,
         "Bruttoleistung" as power_gross,
         "ZugeordnenteWirkleistungWechselrichter" as power_inverter,
+        "Technologie" as technology,
         "Batterietechnologie" as battery_technology,
         --owner
         "AnlagenbetreiberMastrNummer" as unit_owner_mastr_id,
@@ -81,6 +82,7 @@ storage_units as (
         re.power_net,
         re.power_gross,
         re.power_inverter,
+        re.technology,
         re.battery_technology,
         --owner
         re.unit_owner_mastr_id,
