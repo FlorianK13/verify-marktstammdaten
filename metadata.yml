@@ -36,42 +36,42 @@ plugins:
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               ' ' AS "wind onshore",
-              'district' AS Kategorie
+              'district' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '  ' AS "wind onshore",
-              'district, active units' AS Kategorie
+              'district, active units' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '   ' AS "wind onshore",
-              'district, DSO approved' AS Kategorie
+              'district, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '    ' AS "wind onshore",
-              'district, active units, DSO approved' AS Kategorie
+              'district, active units, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '     ' AS "wind onshore",
-              'municipality' AS Kategorie
+              'municipality' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '      ' AS "wind onshore",
-              'municipality, DSO approved' AS Kategorie
+              'municipality, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1                         
           library: vega-lite
@@ -84,7 +84,7 @@ plugins:
             encoding:
               x: { field: wind onshore, type: nominal }
               y: { field: share, type: quantitative  }
-              color: { field: Kategorie, type: nominal }
+              color: { field: category, type: nominal }
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
@@ -96,28 +96,28 @@ plugins:
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
               ' ' AS biomass,
-              'district' AS Kategorie
+              'district' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__district'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
               '  ' AS biomass,
-              'district, DSO approved' AS Kategorie
+              'district, DSO approved' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
               '   ' AS biomass,
-              'municipality' AS Kategorie
+              'municipality' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__municipality' 
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
               '    ' AS biomass,
-              'municipality, DSO approved' AS Kategorie
+              'municipality, DSO approved' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
                          
@@ -131,7 +131,7 @@ plugins:
             encoding:
               x: { field: biomass, type: nominal }
               y: { field: share, type: quantitative  }
-              color: { field: Kategorie, type: nominal }
+              color: { field: category, type: nominal }
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
@@ -143,28 +143,28 @@ plugins:
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
               ' ' AS solar,
-              'district' AS Kategorie
+              'district' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__district'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
               '  ' AS solar,
-              'district, DSO approved' AS Kategorie
+              'district, DSO approved' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
               '   ' AS solar,
-              'municipality' AS Kategorie
+              'municipality' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__municipality' 
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 2) as share,
               '    ' AS solar,
-              'municipality, DSO approved' AS Kategorie
+              'municipality, DSO approved' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
                          
@@ -178,7 +178,7 @@ plugins:
             encoding:
               x: { field: solar, type: nominal }
               y: { field: share, type: quantitative  }
-              color: { field: Kategorie, type: nominal }
+              color: { field: category, type: nominal }
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
@@ -190,28 +190,28 @@ plugins:
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
               ' ' AS hydro,
-              'district' AS Kategorie
+              'district' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__district'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
               '  ' AS hydro,
-              'district, DSO approved' AS Kategorie
+              'district, DSO approved' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
               '   ' AS hydro,
-              'municipality' AS Kategorie
+              'municipality' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__municipality' 
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
               '    ' AS hydro,
-              'municipality, DSO approved' AS Kategorie
+              'municipality, DSO approved' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
                          
@@ -225,7 +225,7 @@ plugins:
             encoding:
               x: { field: hydro, type: nominal }
               y: { field: share, type: quantitative  }
-              color: { field: Kategorie, type: nominal }
+              color: { field: category, type: nominal }
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
@@ -251,9 +251,9 @@ plugins:
           db: failed_tests
           query: >-
             SELECT 
-              power_gross as "Power of installed Modules in W",
-              power_inverter as "Power Inverter in W",
-              power_net as "Net Power in W"
+              power_gross as "Power of installed Modules in kW",
+              power_inverter as "Power Inverter in kW",
+              power_net as "Net Power in kW"
             FROM solar
             WHERE failed_test = 'column_division__power_gross_power_inverter'
             LIMIT 1000
@@ -267,9 +267,9 @@ plugins:
                 select: { fields: [source], type: point, "on": mouseover }
                 bind: legend
             encoding:
-              x: { field: 'Power of installed Modules in W', type: quantitative, scale: {type: log} }
-              y: { field: "Power Inverter in W", type: quantitative, scale: {type: log}  }
-              size: { field: "Net Power in W", type: quantitative }
+              x: { field: 'Power of installed Modules in kW', type: quantitative, scale: {type: log} }
+              y: { field: "Power Inverter in kW", type: quantitative, scale: {type: log}  }
+              size: { field: "Net Power in kW", type: quantitative }
 
         wrong-division-gross-inverter-storage-number:
           title: Share of storage units that have non-matching sizes of inverter and storage power
@@ -292,9 +292,9 @@ plugins:
           db: failed_tests
           query: >-
             SELECT 
-              power_gross as "Power of installed Storage in W",
-              power_inverter as "Power Inverter in W",
-              power_net as "Net Power in W"
+              power_gross as "Power of installed Storage in kW",
+              power_inverter as "Power Inverter in kW",
+              power_net as "Net Power in kW"
             FROM storage
             WHERE failed_test = 'column_division__power_gross_power_inverter'
             LIMIT 1000
@@ -308,9 +308,9 @@ plugins:
                 select: { fields: [source], type: point, "on": mouseover }
                 bind: legend
             encoding:
-              x: { field: 'Power of installed Storage in W', type: quantitative, scale: {type: log} }
-              y: { field: "Power Inverter in W", type: quantitative, scale: {type: log}  }
-              size: { field: "Net Power in W", type: quantitative }
+              x: { field: 'Power of installed Storage in kW', type: quantitative, scale: {type: log} }
+              y: { field: "Power Inverter in kW", type: quantitative, scale: {type: log}  }
+              size: { field: "Net Power in kW", type: quantitative }
         
         wrong-installation-year:
           title: Units that were installed to early or where the planned installation year is to far in the future.
