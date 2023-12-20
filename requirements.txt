@@ -1,5 +1,6 @@
 open-mastr
 geopandas
 SQLAlchemy
+GeoAlchemy2
 datasette
 dbt-postgres
