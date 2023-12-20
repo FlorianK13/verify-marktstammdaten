@@ -10,6 +10,12 @@ models:
           min_value: 0.05
           max_value: 20
       - expect_column_pair_division_to_be_within:
+          name: solar_column_division__power_gross_utilized_area
+          column_A: power_gross
+          column_B: utilized_area # seems to be in hectar
+          min_value: 50
+          max_value: 1100 # usual value is 0.8 MW per hectar
+      - expect_column_pair_division_to_be_within:
           name: solar_column_division__power_gross_number_modules
           column_A: power_gross
           column_B: number_of_modules

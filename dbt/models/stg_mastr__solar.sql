@@ -40,6 +40,8 @@ renamed as (
         "Nebenausrichtung" as orientation_secondary,
         "GemeinsamerWechselrichterMitSpeicher" as combination_with_storage,
         "Lage" as unit_type,
+        "InAnspruchGenommeneFlaeche" as utilized_area,
+
         --owner
         "AnlagenbetreiberMastrNummer" as unit_owner_mastr_id,
         "Nutzungsbereich" as utilization_area,
