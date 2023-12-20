@@ -97,7 +97,9 @@ def load_geoboundaries(constants, engine) -> gpd.GeoDataFrame:
         "C:/", "zip:///"
     )
     gdf = gpd.read_file(zipfile)
-    gdf.to_postgis(name=constants["table_name"], con=engine)
+    gdf.to_crs(crs="EPSG:4326", inplace=True)
+    gdf["geometry"] = gdf["geometry"].buffer(0.015)
+    gdf.to_postgis(name=constants["table_name"], con=engine, if_exists="replace")
 
 
 if __name__ == "__main__":
