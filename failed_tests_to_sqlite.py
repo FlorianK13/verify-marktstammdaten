@@ -23,7 +23,7 @@ def main():
         if len(df) == 0:
             continue
         add_failed_tests_to_sqlite(df, table, engine=sqlite_engine)
-    create_mastr_metadata_file(
+    create_mastr_metadata_table(
         input_engine=postgres_engine, output_engine=sqlite_engine
     )
 
@@ -64,7 +64,7 @@ def delete_columns_from_df_that_arenot_in_database(df, sqlite_engine, table):
     return df
 
 
-def create_mastr_metadata_file(input_engine, output_engine):
+def create_mastr_metadata_table(input_engine, output_engine):
     tables = [
         "stg_mastr__solar",
         "stg_mastr__biomass",
