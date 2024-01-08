@@ -7,6 +7,5 @@ Verifying and testing data in the German Energy dataset "Marktstammdatenregister
 1. Run `pip install -r requirements.txt`
 1. Run `datasette install datasette-dashboards`
 1. Run `docker-compose up`
-1. Run `python load_raw_data.py`
 1. Run `./run_tests.sh`
 1. Run `datasette serve -m .\metadata.yml .\failed_tests.db`
