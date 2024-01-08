@@ -2,9 +2,8 @@ import os
 
 import pandas as pd
 import sqlalchemy
-from sqlalchemy import create_engine, inspect, text
-
 from load_raw_data import get_engine
+from sqlalchemy import create_engine, inspect, text
 
 
 def main():
