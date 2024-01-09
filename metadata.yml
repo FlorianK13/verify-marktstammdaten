@@ -751,7 +751,12 @@ plugins:
                 select: { fields: [source], type: point, "on": mouseover }
                 bind: legend
             encoding:
-              x: { field: Installation year, type: quantitative }
+              x:
+                {
+                  field: Installation year,
+                  type: quantitative,
+                  axis: { format: d },
+                }
               y: { field: Power of installed units in kW, type: quantitative }
               color: { field: technology, type: nominal }
               opacity:
