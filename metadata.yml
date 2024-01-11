@@ -10,6 +10,7 @@ plugins:
         - [chart-location-solar-power, chart-location-solar]
         - [chart-location-biomass-power, chart-location-biomass]
         - [chart-location-hydro-power, chart-location-hydro]
+        - [chart-not-null-power, chart-not-null-power]
         - [
             wrong-division-number-modules-gross-solar-number,
             wrong-division-number-modules-gross-solar-chart,
@@ -536,6 +537,37 @@ plugins:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
 
+        chart-not-null-power:
+          title: Number of units that have no power.
+          db: failed_tests
+          query: >-
+            SELECT 
+              COUNT(*) as value,
+              'combustion, total' as category
+            FROM combustion
+            WHERE failed_test = 'not_null__power'
+            UNION ALL
+            SELECT 
+              COUNT(*) as value,
+              'combustion, DSO approved' as category
+            FROM combustion
+            WHERE failed_test = 'not_null__power' and grid_operator_inspection = 1
+
+          library: vega-lite
+          display:
+            mark: { type: bar, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              x: { field: category, type: nominal }
+              y: { field: value, type: quantitative }
+              color: { field: category, type: nominal }
+              opacity:
+                condition: { param: highlight, value: 1 }
+                value: 0.2
+
         wrong-division-gross-inverter-solar-number:
           title: Share of solar units that have non-matching sizes of inverter and installed PV capacity
           db: failed_tests
@@ -784,29 +816,150 @@ plugins:
             Copyright: [Marktstammdatenregister](https://www.marktstammdatenregister.de/MaStR) - Bundesnetzagentur f&uuml;r Elektrizit&auml;t, Gas, Telekommunikation, Post und Eisenbahnen | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0)
 
     erronous-entries-of-grid-operators:
-      title: Finden Sie fehlerhafte Einträge im Marktstammdatenregister
-      description: Some Description
+      title: Finden Sie fehlerhafte Eintraege im Marktstammdatenregister
+      description:
       layout:
-        - [units-table]
+        - [markdown-search]
+        - [table-wrong-locations]
+        - [table-wrong-power]
+        - [date-chart]
+        - [data-license-note]
+
       filters:
         Landkreis:
           name: Landkreis
           type: string
-          default: "N\\ürnberger Land"
+          default: ""
         Kreisschluessel:
           name: Kreisschluessel
           type: string
           default: 09574
       charts:
-        units-table:
-          title: Anlagen aus dem gewählten Landkreis, welche einen Fehler enthalten könnten.
+        markdown-search:
+          library: markdown
+          display: |-
+            Um fehlerhafte Anlagen im Marktstammdatenregister eines bestimmten Landkreises anzuzeigen,
+            geben Sie entweder den Namen des Landkreises oder den f`&uuml;`nfstelligen Landkreisschl`&uuml;`ssel in
+            die Suchfelder unten ein. Den Kreisschluessel koennen Sie [hier](https://de.wikipedia.org/wiki/Liste_der_Landkreise_in_Deutschland)
+            finden. Klicken Sie dann auf "Apply", um die Ergebnisse zu erhalten.
+
+        date-chart:
+          title: "Die gezeigten Daten wurden heruntergeladen am:"
+          db: failed_tests
+          query: SELECT download_date from biomass LIMIT 1
+          library: metric
+          display:
+            field: download_date
+            prefix:
+            suffix:
+
+        table-wrong-locations:
+          title: Anlagen aus dem gewaehlten Landkreis, deren Koordinaten nicht im Landkreis liegen.
           db: failed_tests
           query: >-
             SELECT
-              *
+              mastr_id,
+              longitude,
+              latitude,
+              district,
+              municipality,
+              installation_year,
+              'solar' as type
             FROM solar
-            WHERE TRUE
+            WHERE failed_test = 'point_in_area__district'
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+            UNION ALL
+            SELECT
+              mastr_id,
+              longitude,
+              latitude,
+              district,
+              municipality,
+              installation_year,
+              'wind' as type
+            FROM wind
+            WHERE failed_test = 'point_in_area__district'
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+            UNION ALL
+            SELECT
+              mastr_id,
+              longitude,
+              latitude,
+              district,
+              municipality,
+              installation_year,
+              'hydro' as type
+            FROM hydro
+            WHERE failed_test = 'point_in_area__district'
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+            UNION ALL
+            SELECT
+              mastr_id,
+              longitude,
+              latitude,
+              district,
+              municipality,
+              installation_year,
+              'combustion' as type
+            FROM combustion
+            WHERE failed_test = 'point_in_area__district'
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+            UNION ALL
+            SELECT
+              mastr_id,
+              longitude,
+              latitude,
+              district,
+              municipality,
+              installation_year,
+              'biomass' as type
+            FROM biomass
+            WHERE failed_test = 'point_in_area__district'
               [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
           library: table
-          display:
+
+        table-wrong-power:
+          title: Anlagen aus dem gewaehlten Landkreis, bei denen die Leistung des Wechselrichters nicht zu der Leistung der Anlage passt.
+          db: failed_tests
+          query: >-
+            SELECT
+              mastr_id,
+              power_gross,
+              power_inverter,
+              power_net,
+              district,
+              municipality,
+              installation_year,
+              'solar' as type
+            FROM solar
+            WHERE failed_test = 'column_division__power_gross_power_inverter'
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+            UNION ALL
+            SELECT
+              mastr_id,
+              power_gross,
+              power_inverter,
+              power_net,
+              district,
+              municipality,
+              installation_year,
+              'storage' as type
+            FROM storage
+            WHERE failed_test = 'column_division__power_gross_power_inverter'
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+
+          library: table
+
+        data-license-note:
+          library: markdown
+          display: |-
+            # Data License
+            > Die Daten sind unter der Lizenz **Datenlizenz Deutschland - Namensnennung - Version 2.0** (DL-DE-BY-2.0) ver`&ouml;`ffentlicht.
+            Copyright: [Marktstammdatenregister](https://www.marktstammdatenregister.de/MaStR) - Bundesnetzagentur f&uuml;r Elektrizit&auml;t, Gas, Telekommunikation, Post und Eisenbahnen | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0)
