@@ -23,6 +23,7 @@ plugins:
             wrong-division-gross-inverter-storage-chart,
           ]
         - [wrong-installation-year, wrong-installation-year]
+        - [metric-wind-hub-height, metric-wind-hub-height]
         - [data-license-note, data-license-note]
       charts:
         date-chart:
@@ -685,6 +686,18 @@ plugins:
                 }
               size: { field: "Power per module in kW", type: quantitative }
 
+        metric-wind-hub-height:
+          title: Number of wind turbines that have a larger rotor radius then hub height
+          db: failed_tests
+          query: >-
+            SELECT 
+              COUNT(*) AS value 
+            FROM wind 
+            WHERE failed_test = 'A_larger_B__hub_height_rotor_diameter'
+          library: metric
+          display:
+            field: value
+
         wrong-installation-year:
           title: Units that were installed to early or where the planned installation year is to far in the future.
           db: failed_tests
@@ -769,3 +782,31 @@ plugins:
             # Data License
             > The data has the license **Datenlizenz Deutschland - Namensnennung - Version 2.0** (DL-DE-BY-2.0).
             Copyright: [Marktstammdatenregister](https://www.marktstammdatenregister.de/MaStR) - Bundesnetzagentur f&uuml;r Elektrizit&auml;t, Gas, Telekommunikation, Post und Eisenbahnen | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0)
+
+    erronous-entries-of-grid-operators:
+      title: Finden Sie fehlerhafte Einträge im Marktstammdatenregister
+      description: Some Description
+      layout:
+        - [units-table]
+      filters:
+        Landkreis:
+          name: Landkreis
+          type: string
+          default: "N\\ürnberger Land"
+        Kreisschluessel:
+          name: Kreisschluessel
+          type: string
+          default: 09574
+      charts:
+        units-table:
+          title: Anlagen aus dem gewählten Landkreis, welche einen Fehler enthalten könnten.
+          db: failed_tests
+          query: >-
+            SELECT
+              *
+            FROM solar
+            WHERE TRUE
+              [[ AND district = :Landkreis ]]
+              [[ AND district_id = :Kreisschluessel ]]
+          library: table
+          display:
