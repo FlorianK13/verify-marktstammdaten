@@ -840,7 +840,7 @@ plugins:
           display: |-
             Um fehlerhafte Anlagen im Marktstammdatenregister eines bestimmten Landkreises anzuzeigen,
             geben Sie entweder den Namen des Landkreises oder den f`&uuml;`nfstelligen Landkreisschl`&uuml;`ssel in
-            die Suchfelder unten ein. Den Kreisschluessel koennen Sie [hier](https://de.wikipedia.org/wiki/Liste_der_Landkreise_in_Deutschland)
+            die Suchfelder unten ein. Den Kreisschl&uuml;ssel koennen Sie [hier](https://de.wikipedia.org/wiki/Liste_der_Landkreise_in_Deutschland)
             finden. Klicken Sie dann auf "Apply", um die Ergebnisse zu erhalten.
 
         date-chart:
@@ -924,7 +924,7 @@ plugins:
           library: table
 
         table-wrong-power:
-          title: Anlagen aus dem gewaehlten Landkreis, bei denen die Leistung des Wechselrichters nicht zu der Leistung der Anlage passt.
+          title: Anlagen aus dem gewaehlten Landkreis, bei denen die Leistung des Wechselrichters nicht zu der Leistung der Anlage passt. Angaben zu Leistung in kW.
           db: failed_tests
           query: >-
             SELECT
