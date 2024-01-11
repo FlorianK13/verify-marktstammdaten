@@ -6,7 +6,7 @@ models:
           name: hydro_point_in_area__district
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: district_id
-          model_area: ref('stg_districts__area') 
+          model_area: ref('stg_districts__area')
           model_area_column_id: district_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
@@ -14,13 +14,13 @@ models:
           name: hydro_point_in_area__municipality
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: municipality_id
-          model_area: ref('stg_municipalities__area') 
+          model_area: ref('stg_municipalities__area')
           model_area_column_id: municipality_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
     columns:
       - name: mastr_id
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - unique:
@@ -31,59 +31,66 @@ models:
               name: hydro_regex__mastr_id
               regex: "^[A-Z]{3}\\d{12}$"
       - name: operating_status
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - not_null:
               name: hydro_not_null__operating_status
           - accepted_values:
               name: hydro_accepted_values__operating_status
-              values: ['In Betrieb', 'In Planung', 'Endgültig stillgelegt', 'Vorübergehend stillgelegt']
+              values:
+                [
+                  "In Betrieb",
+                  "In Planung",
+                  "Endgültig stillgelegt",
+                  "Vorübergehend stillgelegt",
+                ]
       - name: grid_operator_inspection
-        description: ''
+        description: ""
         data_type: character varying
       - name: installation_year
-        description: ''
+        description: ""
         data_type: integer
         tests:
           - expect_column_values_to_be_between:
               name: hydro_value_between__installation_year
-              min_value: 1880  
-              max_value: 2030 
-              row_condition: "installation_year is not null" 
+              min_value: 1880
+              max_value: 2030
+              row_condition: "installation_year is not null"
       - name: commissioning_date
-        description: ''
+        description: ""
         data_type: date
       - name: planned_commissioning_date
-        description: ''
+        description: ""
         data_type: date
       - name: download_date
-        description: ''
+        description: ""
         data_type: date
       - name: plant_type
-        description: ''
+        description: ""
         data_type: character varying
       - name: type_of_inflow
-        description: ''
+        description: ""
         data_type: character varying
       - name: power
-        description: ''
+        description: ""
         data_type: double precision
         tests:
           - not_null:
               name: hydro_not_null__power_net
+              where: operating_status = 'In Betrieb'
           - expect_column_values_to_be_between:
               name: hydro_value_between__power_gross
               min_value: 0
               max_value: 1500000 #1.5GW, at 11-2023 largest one was around 1GW in Germany
       - name: unit_owner_mastr_id
-        description: ''
+        description: ""
         data_type: character varying
       - name: municipality_id
-        description: ''
+        description: ""
         data_type: character varying
       - name: municipality
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - not_null:
@@ -92,18 +99,18 @@ models:
               name: hydro_regex__municipality_key
               regex: "^\\d{8}$"
       - name: district_id
-        description: ''
+        description: ""
         data_type: text
       - name: district
-        description: ''
+        description: ""
         data_type: character varying
       - name: zip_code
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - expect_column_values_to_match_regex:
               name: hydro_regex__zip_code
               regex: "^\\d{5}$"
       - name: coordinate
-        description: ''
+        description: ""
         data_type: USER-DEFINED

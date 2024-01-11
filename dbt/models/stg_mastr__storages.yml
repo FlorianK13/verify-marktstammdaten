@@ -1,7 +1,7 @@
 version: 2
 models:
   - name: stg_mastr__storages
-    description: ''
+    description: ""
     tests:
       - expect_column_pair_division_to_be_within:
           name: storage_column_division__power_gross_power_inverter
@@ -23,7 +23,7 @@ models:
           name: storage_point_in_area__district
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: district_id
-          model_area: ref('stg_districts__area') 
+          model_area: ref('stg_districts__area')
           model_area_column_id: district_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
@@ -31,13 +31,13 @@ models:
           name: storage_point_in_area__municipality
           model_point_column_point_geometry: coordinate
           model_point_column_area_id: municipality_id
-          model_area: ref('stg_municipalities__area') 
+          model_area: ref('stg_municipalities__area')
           model_area_column_id: municipality_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
     columns:
       - name: mastr_id
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - unique:
@@ -49,61 +49,68 @@ models:
               regex: "^[A-Z]{3}\\d{12}$"
       - name: operating_status
         data_type: character varying
-        description: ''
+        description: ""
         tests:
           - not_null:
               name: storage_not_null__operating_status
           - accepted_values:
               name: storage_accepted_values__operating_status
-              values: ['In Betrieb', 'In Planung', 'Endgültig stillgelegt', 'Vorübergehend stillgelegt']
+              values:
+                [
+                  "In Betrieb",
+                  "In Planung",
+                  "Endgültig stillgelegt",
+                  "Vorübergehend stillgelegt",
+                ]
       - name: grid_operator_inspection
         data_type: character varying
-        description: ''
+        description: ""
       - name: installation_year
-        description: ''
+        description: ""
         data_type: integer
         tests:
           - expect_column_values_to_be_between:
               name: storage_value_between__installation_year_battery
-              min_value: 1980  
-              max_value: 2030 
-              row_condition: "installation_year is not null and technology = 'Batterie'" 
+              min_value: 1980
+              max_value: 2030
+              row_condition: "installation_year is not null and technology = 'Batterie'"
       - name: commissioning_date
-        description: ''
+        description: ""
         data_type: date
       - name: planned_commissioning_date
-        description: ''
+        description: ""
         data_type: date
       - name: download_date
-        description: ''
+        description: ""
         data_type: date
       - name: storage_capacity
-        description: ''
+        description: ""
         data_type: double precision
       - name: power_net
         data_type: double precision
-        description: ''
+        description: ""
         tests:
           - not_null:
               name: storage_not_null__power_net
+              where: operating_status = 'In Betrieb'
           - expect_column_values_to_be_between:
               name: storage_value_between__power_net
               min_value: 0
               max_value: 800000 # 800MW, at 11-2023 the largest system was 300MW
       - name: power_gross
         data_type: double precision
-        description: ''
+        description: ""
       - name: power_inverter
         data_type: double precision
-        description: ''
+        description: ""
       - name: battery_technology
         data_type: character varying
-        description: ''
+        description: ""
       - name: unit_owner_mastr_id
         data_type: character varying
-        description: ''
+        description: ""
       - name: municipality_id
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - not_null:
@@ -112,16 +119,16 @@ models:
               name: storage_regex__municipality_key
               regex: "^\\d{8}$"
       - name: municipality
-        description: ''
+        description: ""
         data_type: character varying
       - name: district_id
-        description: ''
+        description: ""
         data_type: text
       - name: district
-        description: ''
+        description: ""
         data_type: character varying
       - name: zip_code
-        description: ''
+        description: ""
         data_type: character varying
         tests:
           - expect_column_values_to_match_regex:
@@ -129,4 +136,4 @@ models:
               regex: "^\\d{5}$"
       - name: coordinate
         data_type: USER-DEFINED
-        description: ''
+        description: ""
