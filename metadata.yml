@@ -815,7 +815,7 @@ plugins:
             > The data has the license **Datenlizenz Deutschland - Namensnennung - Version 2.0** (DL-DE-BY-2.0).
             Copyright: [Marktstammdatenregister](https://www.marktstammdatenregister.de/MaStR) - Bundesnetzagentur f&uuml;r Elektrizit&auml;t, Gas, Telekommunikation, Post und Eisenbahnen | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0)
 
-    erronous-entries-of-grid-operators:
+    erronous-entries-district:
       title: Finden Sie fehlerhafte Eintraege im Marktstammdatenregister
       description:
       layout:
