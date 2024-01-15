@@ -826,10 +826,6 @@ plugins:
         - [data-license-note]
 
       filters:
-        Landkreis:
-          name: Landkreis
-          type: string
-          default: ""
         Kreisschluessel:
           name: Kreisschluessel
           type: string
@@ -839,8 +835,8 @@ plugins:
           library: markdown
           display: |-
             Um fehlerhafte Anlagen im Marktstammdatenregister eines bestimmten Landkreises anzuzeigen,
-            geben Sie entweder den Namen des Landkreises oder den f`&uuml;`nfstelligen Landkreisschl`&uuml;`ssel in
-            die Suchfelder unten ein. Den Kreisschl&uuml;ssel koennen Sie [hier](https://de.wikipedia.org/wiki/Liste_der_Landkreise_in_Deutschland)
+            geben Sie den f`&uuml;`nfstelligen Landkreisschl`&uuml;`ssel in
+            die Suchfelder unten ein. Den Kreisschl&uuml;ssel f`&uuml;`r Ihren Landkreis k`&ouml;`nnen Sie [hier](https://de.wikipedia.org/wiki/Liste_der_Landkreise_in_Deutschland)
             finden. Klicken Sie dann auf "Apply", um die Ergebnisse zu erhalten.
 
         date-chart:
@@ -858,69 +854,77 @@ plugins:
           db: failed_tests
           query: >-
             SELECT
-              mastr_id,
-              longitude,
-              latitude,
-              district,
-              municipality,
-              installation_year,
-              'solar' as type
+              mastr_id as "MaStR-Nr.",
+              longitude as "Laengengrad",
+              latitude as "Breitengrad",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year  as "Installationsjahr",
+              'Solaranlage' as "Typ"
             FROM solar
             WHERE failed_test = 'point_in_area__district'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
             UNION ALL
             SELECT
-              mastr_id,
-              longitude,
-              latitude,
-              district,
-              municipality,
-              installation_year,
-              'wind' as type
+              mastr_id as "MaStR-Nr.",
+              longitude as "Laengengrad",
+              latitude as "Breitengrad",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year  as "Installationsjahr",
+              'Windkraftanlage' as "Typ"
             FROM wind
             WHERE failed_test = 'point_in_area__district'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
             UNION ALL
             SELECT
-              mastr_id,
-              longitude,
-              latitude,
-              district,
-              municipality,
-              installation_year,
-              'hydro' as type
+              mastr_id as "MaStR-Nr.",
+              longitude as "Laengengrad",
+              latitude as "Breitengrad",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year  as "Installationsjahr",
+              'Wasserkraftwer' as "Typ"
             FROM hydro
             WHERE failed_test = 'point_in_area__district'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
             UNION ALL
             SELECT
-              mastr_id,
-              longitude,
-              latitude,
-              district,
-              municipality,
-              installation_year,
-              'combustion' as type
+              mastr_id as "MaStR-Nr.",
+              longitude as "Laengengrad",
+              latitude as "Breitengrad",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year  as "Installationsjahr",
+              'Verbrennung' as "Typ"
             FROM combustion
             WHERE failed_test = 'point_in_area__district'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
             UNION ALL
             SELECT
-              mastr_id,
-              longitude,
-              latitude,
-              district,
-              municipality,
-              installation_year,
-              'biomass' as type
+              mastr_id as "MaStR-Nr.",
+              longitude as "Laengengrad",
+              latitude as "Breitengrad",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year  as "Installationsjahr",
+              'Biomasse' as "Typ"
             FROM biomass
             WHERE failed_test = 'point_in_area__district'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
+            UNION ALL
+            SELECT
+              mastr_id as "MaStR-Nr.",
+              longitude as "Laengengrad",
+              latitude as "Breitengrad",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year  as "Installationsjahr",
+              'Stromspeicher' as "Typ"
+            FROM storage
+            WHERE failed_test = 'point_in_area__district'
+              [[ AND district_id = :Kreisschluessel ]]
+            ORDER BY "Installationsjahr" DESC
           library: table
 
         table-wrong-power:
@@ -928,33 +932,31 @@ plugins:
           db: failed_tests
           query: >-
             SELECT
-              mastr_id,
-              power_gross,
-              power_inverter,
-              power_net,
-              district,
-              municipality,
-              installation_year,
-              'solar' as type
+              mastr_id as "MaStR-Nr.",
+              power_gross as "Leistung Solarmodule",
+              power_inverter as "Leistung Wechselrichter",
+              power_net as "Leistung netto",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year as "Installationsjahr",
+              'Solaranlage' as "Typ"
             FROM solar
             WHERE failed_test = 'column_division__power_gross_power_inverter'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
             UNION ALL
             SELECT
-              mastr_id,
-              power_gross,
-              power_inverter,
-              power_net,
-              district,
-              municipality,
-              installation_year,
-              'storage' as type
+              mastr_id as "MaStR-Nr.",
+              power_gross as "Leistung Solarmodule",
+              power_inverter as "Leistung Wechselrichter",
+              power_net as "Leistung netto",
+              district as "Landkreis",
+              municipality as "Gemeinde",
+              installation_year as "Installationsjahr",
+              'Stromspeicher' as "Typ"
             FROM storage
             WHERE failed_test = 'column_division__power_gross_power_inverter'
-              [[ AND district = :Landkreis ]]
               [[ AND district_id = :Kreisschluessel ]]
-
+            ORDER BY "Gemeinde"
           library: table
 
         data-license-note:
