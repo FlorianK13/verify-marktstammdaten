@@ -10,7 +10,6 @@ plugins:
         - [chart-location-solar-power, chart-location-solar]
         - [chart-location-biomass-power, chart-location-biomass]
         - [chart-location-hydro-power, chart-location-hydro]
-        - [chart-not-null-power, chart-not-null-power]
         - [
             wrong-division-number-modules-gross-solar-number,
             wrong-division-number-modules-gross-solar-chart,
@@ -420,37 +419,6 @@ plugins:
             encoding:
               x: { field: hydro, type: nominal }
               y: { field: share, type: quantitative }
-              color: { field: category, type: nominal }
-              opacity:
-                condition: { param: highlight, value: 1 }
-                value: 0.2
-
-        chart-not-null-power:
-          title: Number of units that have no power.
-          db: failed_tests
-          query: >-
-            SELECT 
-              COUNT(*) as value,
-              'combustion, total' as category
-            FROM combustion
-            WHERE failed_test = 'not_null__power'
-            UNION ALL
-            SELECT 
-              COUNT(*) as value,
-              'combustion, DSO approved' as category
-            FROM combustion
-            WHERE failed_test = 'not_null__power' and grid_operator_inspection = 1
-
-          library: vega-lite
-          display:
-            mark: { type: bar, tooltip: true }
-            params:
-              - name: highlight
-                select: { fields: [source], type: point, "on": mouseover }
-                bind: legend
-            encoding:
-              x: { field: category, type: nominal }
-              y: { field: value, type: quantitative }
               color: { field: category, type: nominal }
               opacity:
                 condition: { param: highlight, value: 1 }
