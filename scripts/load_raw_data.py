@@ -8,7 +8,10 @@ from sqlalchemy import create_engine
 
 
 def main():
-    """Download the Marktstammdatenregister and save it to the database that was created by docker-compose."""
+    """
+    Download the Marktstammdatenregister and data about german administrative areas.
+    Then, save it to the database that was created by docker-compose.
+    """
 
     engine = get_engine()
     download_mastr(engine)
