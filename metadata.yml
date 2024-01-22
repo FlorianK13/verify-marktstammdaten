@@ -53,48 +53,34 @@ plugins:
             and units that are marked as active.
 
         chart-location-wind:
-          title: Share of units that have missmatching coordinates and adresse.
+          title: Share of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
-              ' ' AS "wind onshore",
+              '   ' AS "wind onshore",
               'district' AS category
             FROM wind 
-            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land'
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
-              '   ' AS "wind onshore",
-              'district, DSO approved' AS category
-            FROM wind 
-            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '    ' AS "wind onshore",
-              'district, active units, DSO approved' AS category
+              'district, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
-              '     ' AS "wind onshore",
+              '      ' AS "wind onshore",
               'municipality' AS category
             FROM wind 
-            WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land'
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
-              '      ' AS "wind onshore",
-              'municipality, DSO approved' AS category
-            FROM wind 
-            WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 2) as share,
               '        ' AS "wind onshore",
-              'municipality, active units, DSO approved' AS category
+              'municipality, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 1
           library: vega-lite
@@ -113,48 +99,34 @@ plugins:
                 value: 0.2
 
         chart-location-wind-power:
-          title: Aggregated Power of wind turbines where the coordinates do not lie within the specified district / municipality.
+          title: Aggregated Power of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
-              ' ' AS "wind onshore",
+              '  ' AS "wind onshore",
               'district' AS category
             FROM wind 
-            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land'
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '  ' AS "wind onshore",
-              'district, DSO approved' AS category
-            FROM wind 
-            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
               '   ' AS "wind onshore",
-              'district, active units, DSO approved' AS category
+              'district, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 1
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '    ' AS "wind onshore",
+              '     ' AS "wind onshore",
               'municipality' AS category
             FROM wind 
-            WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land'
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '     ' AS "wind onshore",
-              'municipality, DSO approved' AS category
-            FROM wind 
-            WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
              UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
               '      ' AS "wind onshore",
-              'municipality, active units, DSO approved' AS category
+              'municipality, DSO approved' AS category
             FROM wind 
             WHERE failed_test = 'point_in_area__municipality' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 1
           library: vega-lite
@@ -173,48 +145,34 @@ plugins:
                 value: 0.2
 
         chart-location-biomass-power:
-          title: Aggregated power of biomass plants that have missmatching coordinates and adresse.
+          title: Aggregated Power of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
-              ' ' AS biomass,
+              '  ' AS biomass,
               'district' AS category
             FROM biomass
-            WHERE failed_test = 'point_in_area__district'
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '  ' AS biomass,
-              'district, DSO approved' AS category
-            FROM biomass
-            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
               '   ' AS biomass,
-              'district, DSO approved, active units' AS category
+              'district, DSO approved' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1 and operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '    ' AS biomass,
+              '     ' AS biomass,
               'municipality' AS category
             FROM biomass
-            WHERE failed_test = 'point_in_area__municipality' 
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '     ' AS biomass,
-              'municipality, DSO approved' AS category
-            FROM biomass
-            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
               '      ' AS biomass,
-              'municipality, DSO approved, active units' AS category
+              'municipality, DSO approved' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1 and operating_status = 'In Betrieb'
           library: vega-lite
@@ -233,48 +191,34 @@ plugins:
                 value: 0.2
 
         chart-location-biomass:
-          title: Share of units that have missmatching coordinates and adresse.
+          title: Share of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
-              ' ' AS biomass,
+              '  ' AS biomass,
               'district' AS category
             FROM biomass
-            WHERE failed_test = 'point_in_area__district'
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
-              '  ' AS biomass,
-              'district, DSO approved' AS category
-            FROM biomass
-            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
               '   ' AS biomass,
-              'district, DSO approved, active units' AS category
+              'district, DSO approved' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1 and operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
-              '    ' AS biomass,
+              '     ' AS biomass,
               'municipality' AS category
             FROM biomass
-            WHERE failed_test = 'point_in_area__municipality' 
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
-              '     ' AS biomass,
-              'municipality, DSO approved' AS category
-            FROM biomass
-            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 2) as share,
               '      ' AS biomass,
-              'municipality, DSO approved, active units' AS category
+              'municipality, DSO approved' AS category
             FROM biomass
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1 and operating_status = 'In Betrieb'
 
@@ -294,48 +238,34 @@ plugins:
                 value: 0.2
 
         chart-location-solar:
-          title: Share of units that have missmatching coordinates and adresse.
+          title: Share of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
-              ' ' AS solar,
+              '  ' AS solar,
               'district' AS category
             FROM solar
-            WHERE failed_test = 'point_in_area__district'
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
-              '  ' AS solar,
-              'district, DSO approved' AS category
-            FROM solar
-            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
               '   ' AS solar,
-              'district, DSO approved, active units' AS category
+              'district, DSO approved' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
-              '    ' AS solar,
+              '     ' AS solar,
               'municipality' AS category
             FROM solar
-            WHERE failed_test = 'point_in_area__municipality' 
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
-              '     ' AS solar,
-              'municipality, DSO approved' AS category
-            FROM solar
-            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
               '      ' AS solar,
-              'municipality, DSO approved, active units' AS category
+              'municipality, DSO approved' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
 
@@ -355,48 +285,34 @@ plugins:
                 value: 0.2
 
         chart-location-solar-power:
-          title: Power of units that have missmatching coordinates and adresse.
+          title: Aggregated Power of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(SUM(power_net)/1000000, 4) as "power in GW",
-              ' ' AS solar,
+              '  ' AS solar,
               'district' AS category
             FROM solar
-            WHERE failed_test = 'point_in_area__district'
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power_net)/1000000, 4) as "power in GW",
-              '  ' AS solar,
-              'district, DSO approved' AS category
-            FROM solar
-            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power_net)/1000000, 4) as "power in GW",
               '   ' AS solar,
-              'district, DSO approved, active units' AS category
+              'district, DSO approved' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power_net)/1000000, 4) as "power in GW",
-              '    ' AS solar,
+              '     ' AS solar,
               'municipality' AS category
             FROM solar
-            WHERE failed_test = 'point_in_area__municipality' 
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power_net)/1000000, 4) as "power in GW",
-              '     ' AS solar,
-              'municipality, DSO approved' AS category
-            FROM solar
-            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power_net)/1000000, 4) as "power in GW",
               '      ' AS solar,
-              'municipality, DSO approved, active units' AS category
+              'municipality, DSO approved' AS category
             FROM solar
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
 
@@ -416,48 +332,34 @@ plugins:
                 value: 0.2
 
         chart-location-hydro-power:
-          title: Aggregated power of hydro power plants that have missmatching coordinates and adresse.
+          title: Aggregated Power of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
-              ' ' AS hydro,
+              '  ' AS hydro,
               'district' AS category
             FROM hydro
-            WHERE failed_test = 'point_in_area__district'
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '  ' AS hydro,
-              'district, DSO approved' AS category
-            FROM hydro
-            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
               '   ' AS hydro,
-              'district, DSO approved, active units' AS category
+              'district, DSO approved' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '    ' AS hydro,
+              '     ' AS hydro,
               'municipality' AS category
             FROM hydro
-            WHERE failed_test = 'point_in_area__municipality' 
-            UNION ALL
-            SELECT 
-              ROUND(SUM(power)/1000000, 3) as "power in GW",
-              '     ' AS hydro,
-              'municipality, DSO approved' AS category
-            FROM hydro
-            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(SUM(power)/1000000, 3) as "power in GW",
               '      ' AS hydro,
-              'municipality, DSO approved, active units' AS category
+              'municipality, DSO approved' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
 
@@ -477,48 +379,34 @@ plugins:
                 value: 0.2
 
         chart-location-hydro:
-          title: Share of units that have missmatching coordinates and adresse.
+          title: Share of active units in the MaStR that have missmatching coordinates and adresse.
           db: failed_tests
           query: >-
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
-              ' ' AS hydro,
+              '  ' AS hydro,
               'district' AS category
             FROM hydro
-            WHERE failed_test = 'point_in_area__district'
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
-              '  ' AS hydro,
-              'district, DSO approved' AS category
-            FROM hydro
-            WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
               '   ' AS hydro,
-              'district, DSO approved, active units' AS category
+              'district, DSO approved' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__district' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
-              '    ' AS hydro,
+              '     ' AS hydro,
               'municipality' AS category
             FROM hydro
-            WHERE failed_test = 'point_in_area__municipality' 
-            UNION ALL
-            SELECT 
-              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
-              '     ' AS hydro,
-              'municipality, DSO approved' AS category
-            FROM hydro
-            WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1
+            WHERE failed_test = 'point_in_area__municipality' AND operating_status = 'In Betrieb'
             UNION ALL
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 2) as share,
               '      ' AS hydro,
-              'municipality, DSO approved, active units' AS category
+              'municipality, DSO approved' AS category
             FROM hydro
             WHERE failed_test = 'point_in_area__municipality' AND grid_operator_inspection = 1 AND operating_status = 'In Betrieb'
 
