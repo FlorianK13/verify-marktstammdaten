@@ -2,7 +2,6 @@ plugins:
   datasette-dashboards:
     verify-marktstammdaten:
       title: Verifying data in the German Core Energy dataset "Marktstammdatenregister"
-      description: Some Description
       layout:
         - [date-chart, date-chart]
         - [note-location, note-location]
@@ -673,7 +672,6 @@ plugins:
 
     erronous-entries-district:
       title: Finden Sie fehlerhafte Eintraege im Marktstammdatenregister
-      description:
       layout:
         - [markdown-search]
         - [table-wrong-locations]
