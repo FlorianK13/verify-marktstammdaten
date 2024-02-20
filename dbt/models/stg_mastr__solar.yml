@@ -47,6 +47,12 @@ models:
           model_area_column_id: municipality_id
           model_area_column_area_geometry: geometry_array
           area_buffer_zone: 0.015
+      - expect_regex_to_limit_value:
+          name: solar_regex_limit_value__unit_name_power_net
+          column_regex: unit_name
+          regex: balkon
+          column_value: power_net
+          maximum_value: 5
     columns:
       - name: mastr_id
         description: ""

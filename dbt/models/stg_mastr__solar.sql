@@ -16,6 +16,7 @@ renamed as (
     select
         --general
         "EinheitMastrNummer" as mastr_id,
+        "NameStromerzeugungseinheit" as unit_name,
         "EinheitBetriebsstatus" as operating_status,
         "NetzbetreiberpruefungStatus" as grid_operator_inspection,
         --dates
