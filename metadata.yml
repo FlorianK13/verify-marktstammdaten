@@ -27,6 +27,7 @@ plugins:
           ]
           
         - [wrong-installation-year, wrong-installation-year]
+        - [metric-solar-balcony, wrong-balcony-power-chart]
         - [metric-wind-hub-height, metric-wind-hub-height]
         - [data-license-note, data-license-note]
       charts:
@@ -629,18 +630,6 @@ plugins:
                 }
               size: { field: "Power per module in kW", type: quantitative }
 
-        metric-wind-hub-height:
-          title: Number of wind turbines that have a larger rotor radius then hub height
-          db: failed_tests
-          query: >-
-            SELECT 
-              COUNT(*) AS value 
-            FROM wind 
-            WHERE failed_test = 'A_larger_B__hub_height_rotor_diameter'
-          library: metric
-          display:
-            field: value
-
         wrong-installation-year:
           title: Units that were installed to early or where the planned installation year is to far in the future.
           db: failed_tests
@@ -721,6 +710,67 @@ plugins:
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
+        wrong-balcony-power-chart:
+          title: Histogram of PV systems that are registered as balcony systems but have a power > 1kW
+          db: failed_tests
+          query: >-
+            SELECT 
+              (CAST(power_net AS INTEGER) / 1) * 1 AS "Power in kW",
+              COUNT(*) AS "Number"
+            FROM 
+                solar 
+            WHERE failed_test = 'value_between__power_net_balcony'
+            AND power_net < 101
+            GROUP BY 
+                "Power in kW"
+            ORDER BY 
+                "Power in kW";
+
+          library: vega-lite
+          display:
+            mark: { type: bar, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              x:
+                {
+                  field: "Power in kW",
+                  type: quantitative,
+                  scale: {
+                    domain: [0, 100]
+                  }
+                }
+              y: { field: Number, type: quantitative, scale: { type: log } }
+              color: { field: technology, type: nominal }
+              opacity:
+                condition: { param: highlight, value: 1 }
+                value: 0.2          
+
+        metric-wind-hub-height:
+          title: Number of wind turbines that have a larger rotor radius then hub height
+          db: failed_tests
+          query: >-
+            SELECT 
+              COUNT(*) AS value 
+            FROM wind 
+            WHERE failed_test = 'A_larger_B__hub_height_rotor_diameter'
+          library: metric
+          display:
+            field: value
+        
+        metric-solar-balcony:
+          title: Number of PV balcony systems that have a power larger 1kWp
+          db: failed_tests
+          query: >-
+            SELECT 
+              COUNT(*) AS value 
+            FROM solar 
+            WHERE failed_test = 'value_between__power_net_balcony'
+          library: metric
+          display:
+            field: value
 
         data-license-note:
           library: markdown
