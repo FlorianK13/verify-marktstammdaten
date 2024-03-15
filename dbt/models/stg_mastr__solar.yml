@@ -14,7 +14,7 @@ models:
           column_A: power_gross
           column_B: utilized_area # seems to be in hectar
           min_value: 50
-          max_value: 1100 # usual value is 0.8 MW per hectar
+          max_value: 1500 # usual value is 1 MW per hectar (source: https://www.umweltbundesamt.de/themen/klima-energie/erneuerbare-energien/photovoltaik/photovoltaik-freiflaechenanlagen#flacheninanspruchnahme-durch-photovoltaik-freiflachenanlagen)
       - expect_column_pair_division_to_be_within:
           name: solar_column_division__power_gross_number_modules
           column_A: power_gross
@@ -112,6 +112,11 @@ models:
               name: solar_value_between__power_net
               min_value: 0
               max_value: 500000 # 500MW, at 11-2023 the largest system was 150MW
+          - expect_column_values_to_be_between:
+              name: solar_value_between__power_net_balcony
+              min_value: 0
+              max_value: 1
+              row_condition: unit_type = 'Steckerfertige Solaranlage (sog. Balkonkraftwerk)'
       - name: power_gross
         data_type: double precision
         description: ""
