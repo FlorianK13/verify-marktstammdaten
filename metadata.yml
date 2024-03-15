@@ -3,33 +3,39 @@ plugins:
     verify-marktstammdaten:
       title: Verifying data in the German Core Energy dataset "Marktstammdatenregister"
       layout:
-        - [date-chart, date-chart]
-        - [note-location, note-location]
-        - [chart-location-wind-power, chart-location-wind]
-        - [chart-location-solar-power, chart-location-solar]
-        - [chart-location-biomass-power, chart-location-biomass]
-        - [chart-location-hydro-power, chart-location-hydro]
+        - [date-chart, date-chart, date-chart, date-chart]
+        - [note-location, note-location, note-location, note-location]
+        - [chart-location-wind-power, chart-location-wind, chart-location-solar-power, chart-location-solar]
+        - [chart-location-biomass-power, chart-location-biomass, chart-location-hydro-power, chart-location-hydro]
         - [
             wrong-division-number-modules-gross-solar-number,
             wrong-division-number-modules-gross-solar-chart,
+            wrong-division-number-modules-gross-solar-chart,
+            wrong-division-number-modules-gross-solar-chart
           ]
         - [
             wrong-division-gross-inverter-solar-number,
             wrong-division-gross-inverter-solar-chart,
+            wrong-division-gross-inverter-solar-chart,
+            wrong-division-gross-inverter-solar-chart
           ]
         - [
             wrong-division-gross-inverter-storage-number,
             wrong-division-gross-inverter-storage-chart,
+            wrong-division-gross-inverter-storage-chart,
+            wrong-division-gross-inverter-storage-chart
           ]
         - [
             wrong-division-gross-power-solar-area-number,
             wrong-division-gross-power-solar-area-chart,
+            wrong-division-gross-power-solar-area-chart,
+            wrong-division-gross-power-solar-area-chart
           ]
           
-        - [wrong-installation-year, wrong-installation-year]
-        - [metric-solar-balcony, wrong-balcony-power-chart]
-        - [metric-wind-hub-height, metric-wind-hub-height]
-        - [data-license-note, data-license-note]
+        - [wrong-installation-year, wrong-installation-year, wrong-installation-year, wrong-installation-year]
+        - [metric-solar-balcony, wrong-balcony-power-chart, wrong-balcony-power-chart, wrong-balcony-power-chart]
+        - [metric-wind-hub-height, metric-wind-hub-height, metric-solar-balcony-regex, metric-solar-balcony-regex]
+        - [data-license-note, data-license-note, data-license-note, data-license-note]
       charts:
         date-chart:
           title: The shown data is from
@@ -768,6 +774,18 @@ plugins:
               COUNT(*) AS value 
             FROM solar 
             WHERE failed_test = 'value_between__power_net_balcony'
+          library: metric
+          display:
+            field: value
+
+        metric-solar-balcony-regex:
+          title: Number of PV systems that have 'balcony' in their name but a power larger 5kW
+          db: failed_tests
+          query: >-
+            SELECT 
+              COUNT(*) AS value 
+            FROM solar 
+            WHERE failed_test = 'regex_limit_value__unit_name_power_net'
           library: metric
           display:
             field: value
