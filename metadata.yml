@@ -564,14 +564,14 @@ plugins:
               size: { field: "Power of installed PV system in kW", type: quantitative }
         
         wrong-division-gross-power-solar-area-number:
-          title: Share of storage units that have non-matching sizes of inverter and storage power
+          title: Share of Ground mounted PV systems where the utilized area does not match
           db: failed_tests
           query: >-
             SELECT 
               ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (
-                SELECT number_rows FROM metadata WHERE table_name='stg_mastr__solar'
+                SELECT number_rows FROM metadata WHERE table_name='solar_ground_mounted'
               ) * 100, 2) AS share 
-            FROM storage 
+            FROM solar 
             WHERE failed_test = 'column_division__power_gross_utilized_area'
           library: metric
           display:
@@ -712,6 +712,9 @@ plugins:
                   field: Installation year,
                   type: quantitative,
                   axis: { format: d },
+                  scale: {
+                    "domain": [1900, 1980]
+                  }
                 }
               y: { field: Power of installed units in kW, type: quantitative }
               color: { field: technology, type: nominal }
