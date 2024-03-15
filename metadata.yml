@@ -21,6 +21,11 @@ plugins:
             wrong-division-gross-inverter-storage-number,
             wrong-division-gross-inverter-storage-chart,
           ]
+        - [
+            wrong-division-gross-power-solar-area-number,
+            wrong-division-gross-power-solar-area-chart,
+          ]
+          
         - [wrong-installation-year, wrong-installation-year]
         - [metric-wind-hub-height, metric-wind-hub-height]
         - [data-license-note, data-license-note]
@@ -522,6 +527,57 @@ plugins:
                   scale: { type: log },
                 }
               size: { field: "Net Power in kW", type: quantitative }
+
+
+        wrong-division-gross-power-solar-area-chart:
+          title: Ground mounted PV systems where the utilized area does not match
+          db: failed_tests
+          query: >-
+            SELECT 
+              power_gross AS "Power of installed PV system in kW",
+              utilized_area AS "Area of the ground mounted PV system in ha",
+              power_gross / utilized_area AS "Power per area in kW/ha"             
+            FROM solar
+            WHERE failed_test = 'column_division__power_gross_utilized_area'
+            LIMIT 1000
+
+          library: vega-lite
+          display:
+            mark: { type: point, tooltip: true }
+            params:
+              - name: highlight
+                select: { fields: [source], type: point, "on": mouseover }
+                bind: legend
+            encoding:
+              y:
+                {
+                  field: "Power of installed PV system in kW",
+                  type: quantitative,
+                  scale: { type: log },
+                }
+              x:
+                {
+                  field: "Area of the ground mounted PV system in ha",
+                  type: quantitative,
+                  scale: { type: log },
+                }
+              size: { field: "Power of installed PV system in kW", type: quantitative }
+        
+        wrong-division-gross-power-solar-area-number:
+          title: Share of storage units that have non-matching sizes of inverter and storage power
+          db: failed_tests
+          query: >-
+            SELECT 
+              ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (
+                SELECT number_rows FROM metadata WHERE table_name='stg_mastr__solar'
+              ) * 100, 2) AS share 
+            FROM storage 
+            WHERE failed_test = 'column_division__power_gross_utilized_area'
+          library: metric
+          display:
+            field: share
+            prefix:
+            suffix: "%"
 
         wrong-division-number-modules-gross-solar-number:
           title: Share of solar units that have erronous power gross or number modules
