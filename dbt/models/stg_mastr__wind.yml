@@ -63,7 +63,7 @@ models:
         tests:
           - expect_column_values_to_be_between:
               name: wind_value_between__installation_year
-              min_value: 1940
+              min_value: 1980
               max_value: 2030
               row_condition: "installation_year is not null"
       - name: commissioning_date
