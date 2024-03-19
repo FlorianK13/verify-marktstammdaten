@@ -749,7 +749,7 @@ plugins:
                   }
                 }
               y: { field: Number, type: quantitative, scale: { type: log } }
-              color: { field: technology, type: nominal }
+              
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2          
