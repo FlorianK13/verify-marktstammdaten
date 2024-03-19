@@ -9,6 +9,14 @@ models:
           column_B: rotor_diameter
           factor_column_A: 2
           where: "technology = 'Horizontalläufer'"
+      - expect_column_pair_division_to_be_within:
+          name: wind_column_division__power_rotor_diameter
+          column_A: power
+          column_B: rotor_diameter
+          min_value: 0.16  # equivalent to 160 W/m2
+          max_value: 0.7 # equivalent to 700 W/m2 source: https://www.researchgate.net/publication/295918972_Technological_evolution_of_onshore_wind_turbines-a_market-based_analysis/figures?lo=1
+          square_column_B: True
+          condition: "technology = 'Horizontalläufer'"
       - expect_point_to_lie_in_area:
           name: wind_point_in_area__district
           model_point_column_point_geometry: coordinate
