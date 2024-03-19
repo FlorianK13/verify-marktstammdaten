@@ -36,6 +36,7 @@ plugins:
         - [metric-solar-balcony, wrong-balcony-power-chart, wrong-balcony-power-chart, wrong-balcony-power-chart]
         - [metric-wind-hub-height, metric-wind-hub-height, metric-solar-balcony-regex, metric-solar-balcony-regex]
         - [data-license-note, data-license-note, data-license-note, data-license-note]
+        - [github-note,github-note,github-note,github-note]
       charts:
         date-chart:
           title: The shown data is from
@@ -796,6 +797,12 @@ plugins:
             # Data License
             > The data has the license **Datenlizenz Deutschland - Namensnennung - Version 2.0** (DL-DE-BY-2.0).
             Copyright: [Marktstammdatenregister](https://www.marktstammdatenregister.de/MaStR) - Bundesnetzagentur f&uuml;r Elektrizit&auml;t, Gas, Telekommunikation, Post und Eisenbahnen | [DL-DE-BY-2.0](https://www.govdata.de/dl-de/by-2-0)
+        
+        github-note:
+          library: markdown
+          display: |-
+            # Open Source Software
+            > All scripts of this project are openly available at [github](https://github.com/FlorianK13/verify-marktstammdaten).
 
     erronous-entries-district:
       title: Finden Sie fehlerhafte Eintraege im Marktstammdatenregister
