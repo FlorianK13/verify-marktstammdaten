@@ -20,7 +20,7 @@ models:
           column_A: power_gross
           column_B: number_of_modules
           min_value: 0.05 # 50 Watt per module
-          max_value: 0.9 # 900 Watt per module
+          max_value: 0.7 # 900 Watt per module
       - expect_column_pair_values_A_to_be_greater_than_B:
           name: solar_A_larger_B__power_gross_power_net
           column_A: power_gross
