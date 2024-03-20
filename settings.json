@@ -1,4 +1,5 @@
 {
     "sql_time_limit_ms": 3500,
-    "force_https_urls": 1
+    "force_https_urls": 0,
+    "max_returned_rows": 2000
 }

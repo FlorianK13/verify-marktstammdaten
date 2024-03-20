@@ -32,6 +32,7 @@ plugins:
             wrong-division-gross-power-solar-area-chart
           ]
           
+        - [map-wind-location, map-wind-location, map-solar-location, map-solar-location]
         - [wrong-installation-year, wrong-installation-year, wrong-installation-year, wrong-installation-year]
         - [metric-solar-balcony, wrong-balcony-power-chart, wrong-balcony-power-chart, wrong-balcony-power-chart]
         - [metric-wind-hub-height, metric-wind-hub-height, metric-solar-balcony-regex, metric-solar-balcony-regex]
@@ -435,6 +436,37 @@ plugins:
               opacity:
                 condition: { param: highlight, value: 1 }
                 value: 0.2
+
+        map-wind-location:
+          title: Map of onshore wind turbines with non-matching coordinates and district
+          db: failed_tests
+          query: >-
+            SELECT
+              ROUND(power/1000, 3) as "power in MW",
+              district,
+              municipality,
+              longitude,
+              latitude
+            FROM wind
+            WHERE longitude IS NOT NULL AND latitude IS NOT NULL AND failed_test = 'point_in_area__district' AND position = 'Windkraft an Land' AND operating_status = 'In Betrieb'
+          library: map
+
+        map-solar-location:
+          title: Map of 2000 largest PV systems with non-matching coordinates and district
+          db: failed_tests
+          query: >-
+            SELECT
+              ROUND(power_net, 0) as "power in kW",
+              district,
+              municipality,
+              longitude,
+              latitude
+            FROM solar
+            WHERE longitude IS NOT NULL AND latitude IS NOT NULL AND failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+            ORDER BY "power in kW" DESC
+            LIMIT 2000
+          library: map
+
 
         wrong-division-gross-inverter-solar-number:
           title: Share of solar units that have non-matching sizes of inverter and installed PV capacity
