@@ -10,4 +10,4 @@ https://marktstammdaten.kotthoff.dev/
 1. Run `datasette install datasette-dashboards`
 1. Run `docker-compose up`
 1. Run `./run_tests.sh`
-1. Run `datasette serve -m .\metadata.yml .\failed_tests.db`
+1. Run `datasette serve .`
