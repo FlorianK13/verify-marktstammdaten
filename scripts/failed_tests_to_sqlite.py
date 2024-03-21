@@ -25,6 +25,7 @@ def main():
     create_mastr_metadata_table(
         input_engine=postgres_engine, output_engine=sqlite_engine
     )
+    describe_final_database(engine=sqlite_engine)
 
 
 def get_test_from_table_name(table_name: str):
@@ -96,6 +97,15 @@ def create_mastr_metadata_table(input_engine, output_engine):
             table=table, engine=input_engine, metadata_df=metadata_df
         )
 
+    # Ad own metadata for ground mounted PV
+    metadata_df = add_metadata_to_dataframe(
+        table="stg_mastr__solar",
+        engine=input_engine,
+        metadata_df=metadata_df,
+        where_condition="unit_type = 'Freifläche'",
+        table_name_replacement="solar_ground_mounted",
+    )
+
     metadata_df.to_sql("metadata", con=output_engine, if_exists="replace", index=False)
 
 
@@ -130,6 +140,17 @@ def add_metadata_to_dataframe(
         ],
     )
     return metadata_df
+
+
+def describe_final_database(engine: sqlalchemy.Engine):
+
+    connection = engine.connect()
+    inspector = inspect(engine)
+    for table in inspector.get_table_names():
+        df = pd.read_sql(table, connection)
+        print(f"Description of table: {table}")
+        print(df.describe())
+    connection.close()
 
 
 if __name__ == "__main__":
