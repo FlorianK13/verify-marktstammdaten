@@ -11,3 +11,4 @@ __pycache__
 # own
 *.db
 *.tex
+*.pdf
