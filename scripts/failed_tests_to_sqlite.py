@@ -15,16 +15,16 @@ def main():
     failed_tests_schema = "dbt_dbt_test__audit"
     inspector = inspect(postgres_engine)
     test_tables = inspector.get_table_names(schema=failed_tests_schema)
-
+    create_mastr_metadata_table(
+        input_engine=postgres_engine, output_engine=sqlite_engine
+    )
     for table in test_tables:
         query = f'SELECT * FROM "{failed_tests_schema}"."{table}"'
         df = pd.read_sql(query, con=postgres_engine)
         if len(df) == 0:
             continue
         add_failed_tests_to_sqlite(df, table, engine=sqlite_engine)
-    create_mastr_metadata_table(
-        input_engine=postgres_engine, output_engine=sqlite_engine
-    )
+
     describe_final_database(engine=sqlite_engine)
 
 
