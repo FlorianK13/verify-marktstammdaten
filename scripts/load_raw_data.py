@@ -21,7 +21,7 @@ def main():
 
 def download_mastr(engine):
     db = Mastr(engine=engine)
-    db.download(date="existing")
+    db.download(date="today")
 
 
 def get_engine():
@@ -101,7 +101,6 @@ def load_geoboundaries(constants, engine) -> gpd.GeoDataFrame:
     )
     gdf = gpd.read_file(zipfile)
     gdf.to_crs(crs="EPSG:4326", inplace=True)
-    gdf["geometry"] = gdf["geometry"].buffer(0.015)
     gdf.to_postgis(name=constants["table_name"], con=engine, if_exists="replace")
 
 
