@@ -47,7 +47,7 @@ renamed_extended as (
         --technical
         "Nettonennleistung" as power_net,
         "Bruttoleistung" as power_gross,
-        "ZugeordnenteWirkleistungWechselrichter" as power_inverter,
+        "ZugeordnenteWirkleistungWechselrichter"::FLOAT as power_inverter,
         "Technologie" as technology,
         "Batterietechnologie" as battery_technology,
         --owner
