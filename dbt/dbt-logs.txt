@@ -1,0 +1,602 @@
+##########################################
+###        dbt run                     ###
+##########################################
+ Running with dbt=1.7.9
+ Registered adapter: postgres=1.7.9
+ Found 8 models, 90 tests, 9 sources, 0 exposures, 0 metrics, 407 macros, 0 groups, 0 semantic models
+ 
+ Concurrency: 4 threads (target='dev')
+ 
+ 1 of 8 START sql table model dbt.stg_districts__area ........................... [RUN]
+ 2 of 8 START sql table model dbt.stg_mastr__biomass ............................ [RUN]
+ 3 of 8 START sql table model dbt.stg_mastr__combustion ......................... [RUN]
+ 4 of 8 START sql table model dbt.stg_mastr__hydro .............................. [RUN]
+ 1 of 8 OK created sql table model dbt.stg_districts__area ...................... [SELECT 400 in 0.44s]
+ 5 of 8 START sql table model dbt.stg_mastr__solar .............................. [RUN]
+ 4 of 8 OK created sql table model dbt.stg_mastr__hydro ......................... [SELECT 8692 in 0.52s]
+ 6 of 8 START sql table model dbt.stg_mastr__storages ........................... [RUN]
+ 2 of 8 OK created sql table model dbt.stg_mastr__biomass ....................... [SELECT 22949 in 0.79s]
+ 7 of 8 START sql table model dbt.stg_mastr__wind ............................... [RUN]
+ 3 of 8 OK created sql table model dbt.stg_mastr__combustion .................... [SELECT 87965 in 1.25s]
+ 8 of 8 START sql table model dbt.stg_municipalities__area ...................... [RUN]
+ 8 of 8 OK created sql table model dbt.stg_municipalities__area ................. [SELECT 10990 in 0.59s]
+ 7 of 8 OK created sql table model dbt.stg_mastr__wind .......................... [SELECT 35789 in 1.28s]
+ 6 of 8 OK created sql table model dbt.stg_mastr__storages ...................... [SELECT 1205792 in 7.70s]
+ 5 of 8 OK created sql table model dbt.stg_mastr__solar ......................... [SELECT 3914021 in 29.90s]
+ 
+ Finished running 8 table models in 0 hours 0 minutes and 30.64 seconds (30.64s).
+ 
+ Completed successfully
+
+ Done. PASS=8 WARN=0 ERROR=0 SKIP=0 TOTAL=8
+
+##########################################
+###        dbt test   full log         ###
+##########################################
+ dbt test --store-failures
+ Running with dbt=1.7.9
+ Registered adapter: postgres=1.7.9
+ Found 8 models, 90 tests, 9 sources, 0 exposures, 0 metrics, 407 macros, 0 groups, 0 semantic models
+ 
+ Concurrency: 4 threads (target='dev')
+ 
+ 1 of 90 START test biomass_accepted_values__operating_status ................... [RUN]
+ 2 of 90 START test biomass_not_null__mastr_id .................................. [RUN]
+ 3 of 90 START test biomass_not_null__municipality_id ........................... [RUN]
+ 4 of 90 START test biomass_not_null__operating_status .......................... [RUN]
+ 3 of 90 WARN 2 biomass_not_null__municipality_id ............................... [WARN 2 in 0.19s]
+ 5 of 90 START test biomass_not_null__power ..................................... [RUN]
+ 4 of 90 PASS biomass_not_null__operating_status ................................ [PASS in 0.20s]
+ 6 of 90 START test biomass_point_in_area__district ............................. [RUN]
+ 1 of 90 PASS biomass_accepted_values__operating_status ......................... [PASS in 0.22s]
+ 2 of 90 PASS biomass_not_null__mastr_id ........................................ [PASS in 0.22s]
+ 7 of 90 START test biomass_point_in_area__municipality ......................... [RUN]
+ 8 of 90 START test biomass_regex__mastr_id ..................................... [RUN]
+ 5 of 90 PASS biomass_not_null__power ........................................... [PASS in 0.15s]
+ 9 of 90 START test biomass_regex__municipality_key ............................. [RUN]
+ 8 of 90 PASS biomass_regex__mastr_id ........................................... [PASS in 0.18s]
+ 10 of 90 START test biomass_regex__zip_code .................................... [RUN]
+ 9 of 90 PASS biomass_regex__municipality_key ................................... [PASS in 0.14s]
+ 11 of 90 START test biomass_unique__mastr_id ................................... [RUN]
+ 10 of 90 PASS biomass_regex__zip_code .......................................... [PASS in 0.15s]
+ 12 of 90 START test biomass_value_between__installation_year ................... [RUN]
+ 11 of 90 PASS biomass_unique__mastr_id ......................................... [PASS in 0.16s]
+ 13 of 90 START test biomass_value_between__power ............................... [RUN]
+ 12 of 90 PASS biomass_value_between__installation_year ......................... [PASS in 0.14s]
+ 14 of 90 START test combustion_accepted_values__operating_status ............... [RUN]
+ 13 of 90 PASS biomass_value_between__power ..................................... [PASS in 0.13s]
+ 15 of 90 START test combustion_not_null__mastr_id .............................. [RUN]
+ 14 of 90 PASS combustion_accepted_values__operating_status ..................... [PASS in 0.13s]
+ 16 of 90 START test combustion_not_null__municipality_id ....................... [RUN]
+ 15 of 90 PASS combustion_not_null__mastr_id .................................... [PASS in 0.15s]
+ 17 of 90 START test combustion_not_null__operating_status ...................... [RUN]
+ 16 of 90 PASS combustion_not_null__municipality_id ............................. [PASS in 0.15s]
+ 18 of 90 START test combustion_not_null__power ................................. [RUN]
+ 17 of 90 PASS combustion_not_null__operating_status ............................ [PASS in 0.13s]
+ 19 of 90 START test combustion_point_in_area__district ......................... [RUN]
+ 18 of 90 PASS combustion_not_null__power ....................................... [PASS in 0.18s]
+ 20 of 90 START test combustion_point_in_area__municipality ..................... [RUN]
+ 7 of 90 WARN 623 biomass_point_in_area__municipality ........................... [WARN 623 in 3.08s]
+ 21 of 90 START test combustion_regex__mastr_id ................................. [RUN]
+ 21 of 90 PASS combustion_regex__mastr_id ....................................... [PASS in 0.32s]
+ 22 of 90 START test combustion_regex__municipality_key ......................... [RUN]
+ 20 of 90 WARN 282 combustion_point_in_area__municipality ....................... [WARN 282 in 2.48s]
+ 23 of 90 START test combustion_regex__zip_code ................................. [RUN]
+ 22 of 90 PASS combustion_regex__municipality_key ............................... [PASS in 0.27s]
+ 23 of 90 PASS combustion_regex__zip_code ....................................... [PASS in 0.22s]
+ 24 of 90 START test combustion_unique__mastr_id ................................ [RUN]
+ 25 of 90 START test combustion_value_between__installation_year ................ [RUN]
+ 25 of 90 WARN 3 combustion_value_between__installation_year .................... [WARN 3 in 0.16s]
+ 26 of 90 START test combustion_value_between__power ............................ [RUN]
+ 24 of 90 PASS combustion_unique__mastr_id ...................................... [PASS in 0.26s]
+ 27 of 90 START test hydro_accepted_values__operating_status .................... [RUN]
+ 26 of 90 PASS combustion_value_between__power .................................. [PASS in 0.17s]
+ 28 of 90 START test hydro_not_null__mastr_id ................................... [RUN]
+ 27 of 90 PASS hydro_accepted_values__operating_status .......................... [PASS in 0.19s]
+ 29 of 90 START test hydro_not_null__municipality_id ............................ [RUN]
+ 28 of 90 PASS hydro_not_null__mastr_id ......................................... [PASS in 0.24s]
+ 30 of 90 START test hydro_not_null__operating_status ........................... [RUN]
+ 29 of 90 WARN 31 hydro_not_null__municipality_id ............................... [WARN 31 in 0.23s]
+ 31 of 90 START test hydro_not_null__power_net .................................. [RUN]
+ 30 of 90 PASS hydro_not_null__operating_status ................................. [PASS in 0.14s]
+ 32 of 90 START test hydro_point_in_area__district .............................. [RUN]
+ 31 of 90 PASS hydro_not_null__power_net ........................................ [PASS in 0.15s]
+ 33 of 90 START test hydro_point_in_area__municipality .......................... [RUN]
+ 33 of 90 WARN 242 hydro_point_in_area__municipality ............................ [WARN 242 in 1.16s]
+ 34 of 90 START test hydro_regex__mastr_id ...................................... [RUN]
+ 34 of 90 PASS hydro_regex__mastr_id ............................................ [PASS in 0.13s]
+ 35 of 90 START test hydro_regex__municipality_key .............................. [RUN]
+ 35 of 90 WARN 8661 hydro_regex__municipality_key ............................... [WARN 8661 in 0.16s]
+ 36 of 90 START test hydro_regex__zip_code ...................................... [RUN]
+ 36 of 90 WARN 31 hydro_regex__zip_code ......................................... [WARN 31 in 0.12s]
+ 37 of 90 START test hydro_unique__mastr_id ..................................... [RUN]
+ 37 of 90 PASS hydro_unique__mastr_id ........................................... [PASS in 0.13s]
+ 38 of 90 START test hydro_value_between__installation_year ..................... [RUN]
+ 38 of 90 PASS hydro_value_between__installation_year ........................... [PASS in 0.13s]
+ 39 of 90 START test hydro_value_between__power_gross ........................... [RUN]
+ 39 of 90 PASS hydro_value_between__power_gross ................................. [PASS in 0.11s]
+ 40 of 90 START test solar_A_larger_B__power_gross_power_net .................... [RUN]
+ 19 of 90 WARN 127 combustion_point_in_area__district ........................... [WARN 127 in 5.95s]
+ 41 of 90 START test solar_A_larger_B_power__inverter_power_net ................. [RUN]
+ 32 of 90 WARN 109 hydro_point_in_area__district ................................ [WARN 109 in 2.79s]
+ 42 of 90 START test solar_accepted_values__operating_status .................... [RUN]
+ 41 of 90 PASS solar_A_larger_B_power__inverter_power_net ....................... [PASS in 1.54s]
+ 42 of 90 PASS solar_accepted_values__operating_status .......................... [PASS in 1.09s]
+ 40 of 90 PASS solar_A_larger_B__power_gross_power_net .......................... [PASS in 1.80s]
+ 43 of 90 START test solar_column_division__power_gross_number_modules .......... [RUN]
+ 44 of 90 START test solar_column_division__power_gross_power_inverter .......... [RUN]
+ 45 of 90 START test solar_column_division__power_gross_utilized_area ........... [RUN]
+ 45 of 90 WARN 3758 solar_column_division__power_gross_utilized_area ............ [WARN 3758 in 1.20s]
+ 46 of 90 START test solar_not_null__mastr_id ................................... [RUN]
+ 44 of 90 WARN 23251 solar_column_division__power_gross_power_inverter .......... [WARN 23251 in 1.29s]
+ 47 of 90 START test solar_not_null__municipality_id ............................ [RUN]
+ 43 of 90 WARN 43733 solar_column_division__power_gross_number_modules .......... [WARN 43733 in 1.38s]
+ 48 of 90 START test solar_not_null__operating_status ........................... [RUN]
+ 46 of 90 PASS solar_not_null__mastr_id ......................................... [PASS in 0.57s]
+ 49 of 90 START test solar_not_null__power_net .................................. [RUN]
+ 48 of 90 PASS solar_not_null__operating_status ................................. [PASS in 0.73s]
+ 50 of 90 START test solar_point_in_area__district .............................. [RUN]
+ 47 of 90 WARN 35 solar_not_null__municipality_id ............................... [WARN 35 in 1.05s]
+ 51 of 90 START test solar_point_in_area__municipality .......................... [RUN]
+ 49 of 90 PASS solar_not_null__power_net ........................................ [PASS in 0.61s]
+ 52 of 90 START test solar_regex__mastr_id ...................................... [RUN]
+ 6 of 90 WARN 218 biomass_point_in_area__district ............................... [WARN 218 in 14.82s]
+ 53 of 90 START test solar_regex__municipality_key .............................. [RUN]
+ 51 of 90 WARN 6563 solar_point_in_area__municipality ........................... [WARN 6563 in 10.73s]
+ 54 of 90 START test solar_regex__zip_code ...................................... [RUN]
+ 52 of 90 PASS solar_regex__mastr_id ............................................ [PASS in 10.79s]
+ 55 of 90 START test solar_regex_limit_value__unit_name_power_net ............... [RUN]
+ 53 of 90 PASS solar_regex__municipality_key .................................... [PASS in 7.17s]
+ 56 of 90 START test solar_unique__mastr_id ..................................... [RUN]
+ 55 of 90 WARN 12 solar_regex_limit_value__unit_name_power_net .................. [WARN 12 in 1.77s]
+ 57 of 90 START test solar_value_between__installation_year ..................... [RUN]
+ 57 of 90 WARN 1169 solar_value_between__installation_year ...................... [WARN 1169 in 1.09s]
+ 58 of 90 START test solar_value_between__power_net ............................. [RUN]
+ 58 of 90 PASS solar_value_between__power_net ................................... [PASS in 1.31s]
+ 59 of 90 START test solar_value_between__power_net_balcony ..................... [RUN]
+ 59 of 90 WARN 9810 solar_value_between__power_net_balcony ...................... [WARN 9810 in 0.94s]
+ 60 of 90 START test storage_A_larger_B__power_gross_power_net .................. [RUN]
+ 60 of 90 PASS storage_A_larger_B__power_gross_power_net ........................ [PASS in 0.51s]
+ 61 of 90 START test storage_A_larger_B_power__inverter_power_net ............... [RUN]
+ 54 of 90 WARN 2 solar_regex__zip_code .......................................... [WARN 2 in 6.04s]
+ 62 of 90 START test storage_accepted_values__operating_status .................. [RUN]
+ 61 of 90 WARN 6 storage_A_larger_B_power__inverter_power_net ................... [WARN 6 in 0.58s]
+ 62 of 90 PASS storage_accepted_values__operating_status ........................ [PASS in 0.33s]
+ 63 of 90 START test storage_column_division__power_gross_power_inverter ........ [RUN]
+ 64 of 90 START test storage_not_null__mastr_id ................................. [RUN]
+ 64 of 90 WARN 148 storage_not_null__mastr_id ................................... [WARN 148 in 0.38s]
+ 65 of 90 START test storage_not_null__municipality_id .......................... [RUN]
+ 65 of 90 WARN 39 storage_not_null__municipality_id ............................. [WARN 39 in 0.33s]
+ 66 of 90 START test storage_not_null__operating_status ......................... [RUN]
+ 63 of 90 WARN 770 storage_column_division__power_gross_power_inverter .......... [WARN 770 in 0.76s]
+ 67 of 90 START test storage_not_null__power_net ................................ [RUN]
+ 66 of 90 PASS storage_not_null__operating_status ............................... [PASS in 0.29s]
+ 68 of 90 START test storage_point_in_area__district ............................ [RUN]
+ 67 of 90 PASS storage_not_null__power_net ...................................... [PASS in 0.37s]
+ 69 of 90 START test storage_point_in_area__municipality ........................ [RUN]
+ 69 of 90 WARN 44 storage_point_in_area__municipality ........................... [WARN 44 in 0.84s]
+ 70 of 90 START test storage_regex__mastr_id .................................... [RUN]
+ 68 of 90 WARN 19 storage_point_in_area__district ............................... [WARN 19 in 1.36s]
+ 71 of 90 START test storage_regex__municipality_key ............................ [RUN]
+ 70 of 90 PASS storage_regex__mastr_id .......................................... [PASS in 1.75s]
+ 72 of 90 START test storage_regex__zip_code .................................... [RUN]
+ 71 of 90 PASS storage_regex__municipality_key .................................. [PASS in 1.78s]
+ 73 of 90 START test storage_unique__mastr_id ................................... [RUN]
+ 72 of 90 WARN 27 storage_regex__zip_code ....................................... [WARN 27 in 0.94s]
+ 74 of 90 START test storage_value_between__installation_year_battery ........... [RUN]
+ 74 of 90 WARN 287 storage_value_between__installation_year_battery ............. [WARN 287 in 0.33s]
+ 75 of 90 START test storage_value_between__power_net ........................... [RUN]
+ 75 of 90 PASS storage_value_between__power_net ................................. [PASS in 0.28s]
+ 76 of 90 START test wind_A_larger_B__hub_height_rotor_diameter ................. [RUN]
+ 76 of 90 WARN 4 wind_A_larger_B__hub_height_rotor_diameter ..................... [WARN 4 in 0.20s]
+ 77 of 90 START test wind_accepted_values__operating_status ..................... [RUN]
+ 77 of 90 PASS wind_accepted_values__operating_status ........................... [PASS in 0.16s]
+ 78 of 90 START test wind_column_division__power_rotor_diameter ................. [RUN]
+ 78 of 90 WARN 302 wind_column_division__power_rotor_diameter ................... [WARN 302 in 0.17s]
+ 79 of 90 START test wind_not_null__mastr_id .................................... [RUN]
+ 79 of 90 PASS wind_not_null__mastr_id .......................................... [PASS in 0.16s]
+ 80 of 90 START test wind_not_null__municipality_id ............................. [RUN]
+ 80 of 90 PASS wind_not_null__municipality_id ................................... [PASS in 0.16s]
+ 81 of 90 START test wind_not_null__operating_status ............................ [RUN]
+ 81 of 90 PASS wind_not_null__operating_status .................................. [PASS in 0.16s]
+ 82 of 90 START test wind_not_null__power_net ................................... [RUN]
+ 82 of 90 PASS wind_not_null__power_net ......................................... [PASS in 0.16s]
+ 83 of 90 START test wind_point_in_area__district ............................... [RUN]
+ 73 of 90 PASS storage_unique__mastr_id ......................................... [PASS in 2.70s]
+ 84 of 90 START test wind_point_in_area__municipality ........................... [RUN]
+ 84 of 90 WARN 5089 wind_point_in_area__municipality ............................ [WARN 5089 in 3.53s]
+ 85 of 90 START test wind_regex__municipality_key ............................... [RUN]
+ 85 of 90 PASS wind_regex__municipality_key ..................................... [PASS in 0.26s]
+ 86 of 90 START test wind_regex__zip_code ....................................... [RUN]
+ 86 of 90 PASS wind_regex__zip_code ............................................. [PASS in 0.21s]
+ 87 of 90 START test wind_regex_mastr_id ........................................ [RUN]
+ 87 of 90 PASS wind_regex_mastr_id .............................................. [PASS in 0.28s]
+ 88 of 90 START test wind_unique__mastr_id ...................................... [RUN]
+ 88 of 90 PASS wind_unique__mastr_id ............................................ [PASS in 0.20s]
+ 89 of 90 START test wind_value_between__installation_year ...................... [RUN]
+ 89 of 90 WARN 3 wind_value_between__installation_year .......................... [WARN 3 in 0.15s]
+ 90 of 90 START test wind_value_between__power .................................. [RUN]
+ 90 of 90 PASS wind_value_between__power ........................................ [PASS in 0.15s]
+ 56 of 90 PASS solar_unique__mastr_id ........................................... [PASS in 20.41s]
+ 83 of 90 WARN 1477 wind_point_in_area__district ................................ [WARN 1477 in 14.73s]
+ 50 of 90 WARN 3198 solar_point_in_area__district ............................... [WARN 3198 in 52.96s]
+ 
+ Finished running 90 tests in 0 hours 1 minutes and 4.00 seconds (64.00s).
+ 
+ Completed with 34 warnings:
+ Warning in test biomass_not_null__municipality_id (models\stg_mastr__biomass.yml)
+ Got 2 results, configured to warn if != 0
+   compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__biomass.yml\biomass_not_null__municipality_id.sql
+   See test failures:
+  --------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."biomass_not_null__municipality_id"
+  --------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test biomass_point_in_area__municipality (models\stg_mastr__biomass.yml)
+14:02:54  Got 623 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__biomass.yml\biomass_point_in_area__municipality.sql
+14:02:54
+14:02:54    See test failures:
+  ----------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."biomass_point_in_area__municipality"
+  ----------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test combustion_point_in_area__municipality (models\stg_mastr__combustion.yml)
+14:02:54  Got 282 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__combustion.yml\combustion_point_in_area__municipality.sql
+14:02:54
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."combustion_point_in_area__municipality"
+  -------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test combustion_value_between__installation_year (models\stg_mastr__combustion.yml)
+14:02:54  Got 3 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__combustion.yml\combustion_value_between__installation_year.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."combustion_value_between__installation_year"
+  ------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test hydro_not_null__municipality_id (models\stg_mastr__hydro.yml)
+14:02:54  Got 31 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__hydro.yml\hydro_not_null__municipality_id.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."hydro_not_null__municipality_id"
+  ------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test hydro_point_in_area__municipality (models\stg_mastr__hydro.yml)
+14:02:54  Got 242 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__hydro.yml\hydro_point_in_area__municipality.sql
+14:02:54
+14:02:54    See test failures:
+  --------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."hydro_point_in_area__municipality"
+  --------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test hydro_regex__municipality_key (models\stg_mastr__hydro.yml)
+14:02:54  Got 8661 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__hydro.yml\hydro_regex__municipality_key.sql
+14:02:54
+14:02:54    See test failures:
+  ----------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."hydro_regex__municipality_key"
+  ----------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test hydro_regex__zip_code (models\stg_mastr__hydro.yml)
+14:02:54  Got 31 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__hydro.yml\hydro_regex__zip_code.sql
+14:02:54
+14:02:54    See test failures:
+  --------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."hydro_regex__zip_code"
+  --------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test combustion_point_in_area__district (models\stg_mastr__combustion.yml)
+14:02:54  Got 127 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__combustion.yml\combustion_point_in_area__district.sql
+14:02:54
+14:02:54    See test failures:
+  ---------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."combustion_point_in_area__district"
+  ---------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test hydro_point_in_area__district (models\stg_mastr__hydro.yml)
+14:02:54  Got 109 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__hydro.yml\hydro_point_in_area__district.sql
+14:02:54
+14:02:54    See test failures:
+  ----------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."hydro_point_in_area__district"
+  ----------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_column_division__power_gross_utilized_area (models\stg_mastr__solar.yml)
+14:02:54  Got 3758 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_column_division__power_gross_utilized_area.sql
+14:02:54
+14:02:54    See test failures:
+  -----------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_column_division__power_gross_utilized_area"
+  -----------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_column_division__power_gross_power_inverter (models\stg_mastr__solar.yml)
+14:02:54  Got 23251 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_column_division__power_gross_power_inverter.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_column_division__power_gross_power_inverter"
+  ------------------------------------------------------------------------------------------------------------------------
+14:02:54  
+14:02:54  Warning in test solar_column_division__power_gross_number_modules (models\stg_mastr__solar.yml)
+14:02:54  Got 43733 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_column_division__power_gross_number_modules.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_column_division__power_gross_number_modules"
+  ------------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_not_null__municipality_id (models\stg_mastr__solar.yml)
+14:02:54  Got 35 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_not_null__municipality_id.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_not_null__municipality_id"
+  ------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test biomass_point_in_area__district (models\stg_mastr__biomass.yml)
+14:02:54  Got 218 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__biomass.yml\biomass_point_in_area__district.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."biomass_point_in_area__district"
+  ------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_point_in_area__municipality (models\stg_mastr__solar.yml)
+14:02:54  Got 6563 results, configured to warn if != 0
+14:02:54  
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_point_in_area__municipality.sql
+14:02:54
+14:02:54    See test failures:
+  --------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_point_in_area__municipality"
+  --------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_regex_limit_value__unit_name_power_net (models\stg_mastr__solar.yml)
+14:02:54  Got 12 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_regex_limit_value__unit_name_power_net.sql
+14:02:54
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_regex_limit_value__unit_name_power_net"
+  -------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_value_between__installation_year (models\stg_mastr__solar.yml)
+14:02:54  Got 1169 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_value_between__installation_year.sql
+14:02:54
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_value_between__installation_year"
+  -------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_value_between__power_net_balcony (models\stg_mastr__solar.yml)
+14:02:54  Got 9810 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_value_between__power_net_balcony.sql
+14:02:54  
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_value_between__power_net_balcony"
+  -------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_regex__zip_code (models\stg_mastr__solar.yml)
+14:02:54  Got 2 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_regex__zip_code.sql
+14:02:54
+14:02:54    See test failures:
+  --------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_regex__zip_code"
+  --------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_A_larger_B_power__inverter_power_net (models\stg_mastr__storages.yml)
+14:02:54  Got 6 results, configured to warn if != 0
+14:02:54  
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_A_larger_B_power__inverter_power_net.sql
+14:02:54
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_A_larger_B_power__inverter_power_net"
+  -------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_not_null__mastr_id (models\stg_mastr__storages.yml)
+14:02:54  Got 148 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_not_null__mastr_id.sql
+14:02:54
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_not_null__mastr_id"
+  -------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_not_null__municipality_id (models\stg_mastr__storages.yml)
+14:02:54  Got 39 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_not_null__municipality_id.sql
+14:02:54
+14:02:54    See test failures:
+  --------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_not_null__municipality_id"
+  --------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_column_division__power_gross_power_inverter (models\stg_mastr__storages.yml)
+14:02:54  Got 770 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_column_division__power_gross_power_inverter.sql
+14:02:54
+14:02:54    See test failures:
+  --------------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_column_division__power_gross_power_inverter"
+  --------------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_point_in_area__municipality (models\stg_mastr__storages.yml)
+14:02:54  Got 44 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_point_in_area__municipality.sql
+14:02:54
+14:02:54    See test failures:
+  ----------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_point_in_area__municipality"
+  ----------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_point_in_area__district (models\stg_mastr__storages.yml)
+14:02:54  Got 19 results, configured to warn if != 0
+14:02:54  
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_point_in_area__district.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_point_in_area__district"
+  ------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test storage_regex__zip_code (models\stg_mastr__storages.yml)
+14:02:54  Got 27 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_regex__zip_code.sql
+14:02:54
+14:02:54    See test failures:
+  ----------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_regex__zip_code"
+  ----------------------------------------------------------------------------------------------
+14:02:54  
+14:02:54  Warning in test storage_value_between__installation_year_battery (models\stg_mastr__storages.yml)
+14:02:54  Got 287 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__storages.yml\storage_value_between__installation_year_battery.sql
+14:02:54
+14:02:54    See test failures:
+  -----------------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."storage_value_between__installation_year_battery"
+  -----------------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test wind_A_larger_B__hub_height_rotor_diameter (models\stg_mastr__wind.yml)
+14:02:54  Got 4 results, configured to warn if != 0
+14:02:54  
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__wind.yml\wind_A_larger_B__hub_height_rotor_diameter.sql
+14:02:54
+14:02:54    See test failures:
+  -----------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."wind_A_larger_B__hub_height_rotor_diameter"
+  -----------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test wind_column_division__power_rotor_diameter (models\stg_mastr__wind.yml)
+14:02:54  Got 302 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__wind.yml\wind_column_division__power_rotor_diameter.sql
+14:02:54
+14:02:54    See test failures:
+  -----------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."wind_column_division__power_rotor_diameter"
+  -----------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test wind_point_in_area__municipality (models\stg_mastr__wind.yml)
+14:02:54  Got 5089 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__wind.yml\wind_point_in_area__municipality.sql
+14:02:54
+14:02:54    See test failures:
+  -------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."wind_point_in_area__municipality"
+  -------------------------------------------------------------------------------------------------------
+14:02:54  
+14:02:54  Warning in test wind_value_between__installation_year (models\stg_mastr__wind.yml)
+14:02:54  Got 3 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__wind.yml\wind_value_between__installation_year.sql
+14:02:54
+14:02:54    See test failures:
+  ------------------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."wind_value_between__installation_year"
+  ------------------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test wind_point_in_area__district (models\stg_mastr__wind.yml)
+14:02:54  Got 1477 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__wind.yml\wind_point_in_area__district.sql
+14:02:54
+14:02:54    See test failures:
+  ---------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."wind_point_in_area__district"
+  ---------------------------------------------------------------------------------------------------
+14:02:54
+14:02:54  Warning in test solar_point_in_area__district (models\stg_mastr__solar.yml)
+14:02:54  Got 3198 results, configured to warn if != 0
+14:02:54
+14:02:54    compiled Code at target\compiled\verify_marktstammdaten\models\stg_mastr__solar.yml\solar_point_in_area__district.sql
+14:02:54
+14:02:54    See test failures:
+  ----------------------------------------------------------------------------------------------------
+  select * from "verify-marktstammdatenregister"."dbt_dbt_test__audit"."solar_point_in_area__district"
+  ----------------------------------------------------------------------------------------------------
+14:02:54  
+14:02:54  Done. PASS=56 WARN=34 ERROR=0 SKIP=0 TOTAL=90
+
+
+##########################################
+###        dbt test   failures         ###
+##########################################
+ 3 of 90 WARN 2 biomass_not_null__municipality_id ............................... [WARN 2 in 0.19s]
+ 7 of 90 WARN 623 biomass_point_in_area__municipality ........................... [WARN 623 in 3.08s]
+ 20 of 90 WARN 282 combustion_point_in_area__municipality ....................... [WARN 282 in 2.48s]
+ 25 of 90 WARN 3 combustion_value_between__installation_year .................... [WARN 3 in 0.16s]
+ 29 of 90 WARN 31 hydro_not_null__municipality_id ............................... [WARN 31 in 0.23s]
+ 33 of 90 WARN 242 hydro_point_in_area__municipality ............................ [WARN 242 in 1.16s]
+ 35 of 90 WARN 8661 hydro_regex__municipality_key ............................... [WARN 8661 in 0.16s]
+ 36 of 90 WARN 31 hydro_regex__zip_code ......................................... [WARN 31 in 0.12s]
+ 19 of 90 WARN 127 combustion_point_in_area__district ........................... [WARN 127 in 5.95s]
+ 32 of 90 WARN 109 hydro_point_in_area__district ................................ [WARN 109 in 2.79s]
+ 45 of 90 WARN 3758 solar_column_division__power_gross_utilized_area ............ [WARN 3758 in 1.20s]
+ 44 of 90 WARN 23251 solar_column_division__power_gross_power_inverter .......... [WARN 23251 in 1.29s]
+ 43 of 90 WARN 43733 solar_column_division__power_gross_number_modules .......... [WARN 43733 in 1.38s]
+ 47 of 90 WARN 35 solar_not_null__municipality_id ............................... [WARN 35 in 1.05s]
+ 6 of 90 WARN 218 biomass_point_in_area__district ............................... [WARN 218 in 14.82s]
+ 51 of 90 WARN 6563 solar_point_in_area__municipality ........................... [WARN 6563 in 10.73s]
+ 55 of 90 WARN 12 solar_regex_limit_value__unit_name_power_net .................. [WARN 12 in 1.77s]
+ 57 of 90 WARN 1169 solar_value_between__installation_year ...................... [WARN 1169 in 1.09s]
+ 59 of 90 WARN 9810 solar_value_between__power_net_balcony ...................... [WARN 9810 in 0.94s]
+ 54 of 90 WARN 2 solar_regex__zip_code .......................................... [WARN 2 in 6.04s]
+ 61 of 90 WARN 6 storage_A_larger_B_power__inverter_power_net ................... [WARN 6 in 0.58s]
+ 64 of 90 WARN 148 storage_not_null__mastr_id ................................... [WARN 148 in 0.38s]
+ 65 of 90 WARN 39 storage_not_null__municipality_id ............................. [WARN 39 in 0.33s]
+ 63 of 90 WARN 770 storage_column_division__power_gross_power_inverter .......... [WARN 770 in 0.76s]
+ 69 of 90 WARN 44 storage_point_in_area__municipality ........................... [WARN 44 in 0.84s]
+ 68 of 90 WARN 19 storage_point_in_area__district ............................... [WARN 19 in 1.36s]
+ 72 of 90 WARN 27 storage_regex__zip_code ....................................... [WARN 27 in 0.94s]
+ 74 of 90 WARN 287 storage_value_between__installation_year_battery ............. [WARN 287 in 0.33s]
+ 78 of 90 WARN 302 wind_column_division__power_rotor_diameter ................... [WARN 302 in 0.17s]
+ 84 of 90 WARN 5089 wind_point_in_area__municipality ............................ [WARN 5089 in 3.53s]
+ 83 of 90 WARN 1477 wind_point_in_area__district ................................ [WARN 1477 in 14.73s]
+ 50 of 90 WARN 3198 solar_point_in_area__district ............................... [WARN 3198 in 52.96s]
