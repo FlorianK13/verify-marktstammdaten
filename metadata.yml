@@ -880,6 +880,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year  as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Solaranlage' as "Typ"
             FROM solar
             WHERE failed_test = 'point_in_area__district'
@@ -892,6 +893,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year  as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Windkraftanlage' as "Typ"
             FROM wind
             WHERE failed_test = 'point_in_area__district'
@@ -904,6 +906,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year  as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Wasserkraftwer' as "Typ"
             FROM hydro
             WHERE failed_test = 'point_in_area__district'
@@ -916,6 +919,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year  as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Verbrennung' as "Typ"
             FROM combustion
             WHERE failed_test = 'point_in_area__district'
@@ -928,6 +932,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year  as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Biomasse' as "Typ"
             FROM biomass
             WHERE failed_test = 'point_in_area__district'
@@ -940,6 +945,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year  as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Stromspeicher' as "Typ"
             FROM storage
             WHERE failed_test = 'point_in_area__district'
@@ -959,6 +965,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Solaranlage' as "Typ"
             FROM solar
             WHERE failed_test = 'column_division__power_gross_power_inverter'
@@ -972,6 +979,7 @@ plugins:
               district as "Landkreis",
               municipality as "Gemeinde",
               installation_year as "Installationsjahr",
+              grid_operator_inspection as "Netzbetreiberpruefung",
               'Stromspeicher' as "Typ"
             FROM storage
             WHERE failed_test = 'column_division__power_gross_power_inverter'
