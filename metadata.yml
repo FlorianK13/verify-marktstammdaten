@@ -445,6 +445,7 @@ plugins:
               ROUND(power/1000, 3) as "power in MW",
               district,
               municipality,
+              mastr_id as "MaStR ID",
               longitude,
               latitude
             FROM wind
@@ -459,6 +460,7 @@ plugins:
               ROUND(power_net, 0) as "power in kW",
               district,
               municipality,
+              mastr_id as "MaStR ID",
               longitude,
               latitude
             FROM solar
@@ -491,7 +493,8 @@ plugins:
             SELECT 
               power_gross as "Power of installed Modules in kW",
               power_inverter as "Power Inverter in kW",
-              power_net as "Net Power in kW"
+              power_net as "Net Power in kW",
+              mastr_id as "MaStR ID"             
             FROM solar
             WHERE failed_test = 'column_division__power_gross_power_inverter'
             LIMIT 1000
@@ -541,7 +544,8 @@ plugins:
             SELECT 
               power_gross as "Power of installed Storage in kW",
               power_inverter as "Power Inverter in kW",
-              power_net as "Net Power in kW"
+              power_net as "Net Power in kW",
+              mastr_id as "MaStR ID"             
             FROM storage
             WHERE failed_test = 'column_division__power_gross_power_inverter'
             LIMIT 1000
@@ -567,6 +571,12 @@ plugins:
                   scale: { type: log },
                 }
               size: { field: "Net Power in kW", type: quantitative }
+              "tooltip": [
+                  { "field": "Power of installed Storage in kW", "type": "quantitative", "title": "Installed Power (kW)" },
+                  { "field": "Power Inverter in kW", "type": "quantitative", "title": "Power Inverter (kW)" },
+                  { "field": "Net Power in kW", "type": "quantitative", "title": "Net Power (kW)" },
+                  { "field": "MaStR ID", "type": "nominal", "title": "MaStR ID" }
+                ]
 
 
         wrong-division-gross-power-solar-area-chart:
@@ -576,7 +586,8 @@ plugins:
             SELECT 
               power_gross AS "Power of installed PV system in kW",
               utilized_area AS "Area of the ground mounted PV system in ha",
-              power_gross / utilized_area AS "Power per area in kW/ha"             
+              power_gross / utilized_area AS "Power per area in kW/ha",
+              mastr_id as "MaStR ID"             
             FROM solar
             WHERE failed_test = 'column_division__power_gross_utilized_area'
             LIMIT 1000
@@ -602,6 +613,12 @@ plugins:
                   scale: { type: log },
                 }
               size: { field: "Power of installed PV system in kW", type: quantitative }
+              "tooltip": [
+                  { "field": "Power of installed PV system in kW", "type": "quantitative", "title": "Installed Power (kW)" },
+                  { "field": "Area of the ground mounted PV system in ha", "type": "quantitative", "title": "Area of the ground mounted PV system (ha)" },
+                  { "field": "Power per area in kW/ha", "type": "quantitative", "title": "Power per area (kW/ha)" },
+                  { "field": "MaStR ID", "type": "nominal", "title": "MaStR ID" }
+                ]
         
         wrong-division-gross-power-solar-area-number:
           title: Share of Ground mounted PV systems where the utilized area does not match
@@ -642,7 +659,8 @@ plugins:
             SELECT 
               power_gross as "Power of installed Modules in kW",
               number_of_modules as "Number of modules",
-              ROUND(power_gross / number_of_modules, 2) as "Power per module in kW"
+              ROUND(power_gross / number_of_modules, 2) as "Power per module in kW",
+              mastr_id as "MaStR ID"
             FROM solar
             WHERE failed_test = 'column_division__power_gross_number_modules'
             LIMIT 1000
@@ -668,6 +686,12 @@ plugins:
                   scale: { type: log },
                 }
               size: { field: "Power per module in kW", type: quantitative }
+              "tooltip": [
+                  { "field": "Power of installed Modules in kW", "type": "quantitative", "title": "Installed Power (kW)" },
+                  { "field": "Number of modules", "type": "quantitative", "title": "Number of Modules" },
+                  { "field": "Power per module in kW", "type": "quantitative", "title": "Power per Module (kW)" },
+                  { "field": "MaStR ID", "type": "nominal", "title": "MaStR ID" }
+                ]
 
         wrong-installation-year:
           title: Units that were installed to early or where the planned installation year is to far in the future.
