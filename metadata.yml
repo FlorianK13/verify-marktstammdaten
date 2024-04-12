@@ -1,3 +1,15 @@
+title: "Monitoring Germany's Core Energy System Dataset: A Data Quality Analysis of the Marktstammdatenregister"
+about: FlorianK13/verify-marktstammdaten
+about_url: https://github.com/FlorianK13/verify-marktstammdaten
+description_html: |-
+  <div class="message-info">
+    <p>Welcome to the dashboards and database, described in the paper you can find on <a href="https://arxiv.org/abs/2304.10581">arxiv.org</a></h1>
+    <ul class="bullets">
+      <li>Browse dashboards at <a href="/-/dashboards">/-/dashboards</a></li>
+      <li>Browse database of erroneous entries at <a href="/failed_tests">/failed_tests</a></li>
+    </ul>
+  </div>
+
 plugins:
   datasette-dashboards:
     verify-marktstammdaten:
