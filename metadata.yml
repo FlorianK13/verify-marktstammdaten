@@ -7,6 +7,8 @@ plugins:
         - [note-location, note-location, note-location, note-location]
         - [chart-location-wind-power, chart-location-wind, chart-location-solar-power, chart-location-solar]
         - [chart-location-biomass-power, chart-location-biomass, chart-location-hydro-power, chart-location-hydro]
+        - [map-wind-location, map-wind-location, map-solar-location, map-solar-location]
+        - [note-system-size, note-system-size, note-system-size, note-system-size]
         - [
             wrong-division-number-modules-gross-solar-number,
             wrong-division-number-modules-gross-solar-chart,
@@ -31,8 +33,7 @@ plugins:
             wrong-division-gross-power-solar-area-chart,
             wrong-division-gross-power-solar-area-chart
           ]
-          
-        - [map-wind-location, map-wind-location, map-solar-location, map-solar-location]
+        - [note-technology-specific, note-technology-specific, note-technology-specific, note-technology-specific]
         - [wrong-installation-year, wrong-installation-year, wrong-installation-year, wrong-installation-year]
         - [metric-solar-balcony, wrong-balcony-power-chart, wrong-balcony-power-chart, wrong-balcony-power-chart]
         - [metric-wind-hub-height, metric-wind-hub-height, metric-solar-balcony-regex, metric-solar-balcony-regex]
@@ -53,16 +54,36 @@ plugins:
           library: markdown
           display: |-
             # Location errors
-            As a first validation we check if the coordinates of those units actually lie within
-            the specified districts and municipalities. Therefore we run a spatial join of unit
-            coordinates with the given district boundaries taken from the [Federal Agency for
+            For units with a power larger 30 kW, exact coordinates as well as an address is given. 
+            We checked if the coordinates lie in the given districts and municipalities, 
+            where the geoboundaries were taken from the [Federal Agency for
             Cartography and Geodesy](https://gdz.bkg.bund.de/index.php/default/digitale-geodaten/verwaltungsgebiete.html). 
-            To make sure that no mismatching units appear
-            due to a low resolution of the boundaries, we introduce a buffer zone of several
-            100 meters at each boundary. Units that lie within this buffer zone are
-            not counted as mismatch as long as they belong to one of the neighboring districts.
-            We separate the results by showing all units, units that were already approved by the DSO,
-            and units that are marked as active.
+            Since geoboundaries do not have an infinite resolution, we added a buffer zone of 
+            1.5km to each boundary, so that units that lie on the boundary 
+            (or a maximum of 1.5km outside the district / municipality) still pass the test.
+
+        note-system-size:
+          library: markdown
+          display: |-
+            # System Size errors
+            The power of an electricity producing unit correlates with its system size. 
+            Hence we validated the rated power by comparing it with other quantities that represent 
+            system size. For storages and PV systems, the net power should be close to both the power 
+            of the inverter and of the modules. The power of PV systems should also correlate with the 
+            number of modules and, for ground-mounted PV systems, with the utilized area.
+
+        note-technology-specific:
+          library: markdown
+          display: |-
+            # Technology specific errors
+            Some tests are specific for each technology and rely on domain specific knowledge. 
+            For each technology, we defined a range of years as accepted installation years. 
+            We chose 2030 as a maximum accepted year for planned installations. For wind, solar, 
+            and batteries we chose 1980 as earliest years. Since biomass (with solid biomass fuel), 
+            combustion, and hydro power plants are older technologies, we allowed earlier installation years. 
+            For wind turbines, we also checked that the hub height is larger than the rotor radius, and for PV 
+            systems we checked that balcony PV systems have a rated power P < 1kW.
+
 
         chart-location-wind:
           title: Share of active units in the MaStR that have missmatching coordinates and adresse.
