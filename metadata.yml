@@ -3,11 +3,15 @@ about: FlorianK13/verify-marktstammdaten
 about_url: https://github.com/FlorianK13/verify-marktstammdaten
 description_html: |-
   <div class="message-info">
-    <p>Welcome to the dashboards and database, described in the paper you can find on <a href="https://arxiv.org/abs/2304.10581">arxiv.org</a></h1>
+    <p>Welcome to the dashboards and database - this will be described in the paper you can find on <a href="https://arxiv.org/abs/2304.10581">arxiv.org</a> from mid of may 2024.</h1>
     <ul class="bullets">
       <li>Browse dashboards at <a href="/-/dashboards">/-/dashboards</a></li>
       <li>Browse database of erroneous entries at <a href="/failed_tests">/failed_tests</a></li>
     </ul>
+    <p> The MaStR dataset is one of the most important data sources for the german energy system and 
+    crucial for controlling and understanding the ongoing transformation.
+    It contains a huge amount of valuable and high-quality information. Only a very limited amount of data seems to contain
+    errors. This small subset of the MaStR is further analyzed in our dashboards.</p>
   </div>
 
 plugins:
