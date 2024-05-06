@@ -19,6 +19,7 @@ plugins:
     verify-marktstammdaten:
       title: Verifying data in the German Core Energy dataset "Marktstammdatenregister"
       layout:
+        - [intro,intro,intro,intro]
         - [date-chart, date-chart, date-chart, date-chart]
         - [note-location, note-location, note-location, note-location]
         - [chart-location-wind-power, chart-location-wind, chart-location-solar-power, chart-location-solar]
@@ -65,6 +66,22 @@ plugins:
             field: download_date
             prefix:
             suffix:
+
+        intro:
+          library: markdown
+          display: |-
+            # Introduction
+            The current energy system is undergoing an important transformation, with a 
+            shift from a few large and mainly fossil power plants to an increasing number of small renewable power units.
+            The German legislator has created a large and central power plant registry, 
+            the Marktstammdatenregister, or short, MaStR. It was released in 2019, is updated 
+            on a daily basis, and contains more than 22 million entries about electricity and gas 
+            producers, electricity and gas consumers, storages, grids, and actors from the energy market.
+            This dataset contains a huge amount of valuable and high-quality information. 
+            Only a very limited amount of data seems to contain errors. This is expected, as the source of the
+            data are the individual contributions of millions of plant owners. 
+            This small errouneous subset of the MaStR is further analyzed in our dashboards.
+
 
         note-location:
           library: markdown
