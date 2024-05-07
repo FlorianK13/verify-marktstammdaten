@@ -74,7 +74,13 @@ def create_mastr_metadata_table(input_engine, output_engine):
         "stg_mastr__combustion",
     ]
     metadata_df = pd.DataFrame(
-        columns=["table_name", "number_rows", "number_rows_with_coordinates"]
+        columns=[
+            "table_name",
+            "number_rows",
+            "number_rows_with_coordinates",
+            "number_rows_dso_approved",
+            "number_rows_dso_not_approved",
+        ]
     )
     for table in tables:
         if table == "stg_mastr__wind":
@@ -112,12 +118,14 @@ def create_mastr_metadata_table(input_engine, output_engine):
 def add_metadata_to_dataframe(
     table, engine, metadata_df, where_condition=None, table_name_replacement=None
 ):
+
     query = (
         text(f'SELECT COUNT(*) FROM "dbt"."{table}"')
         if not where_condition
         else text(f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE {where_condition}')
     )
-    number_rows = engine.connect().execute(query).fetchone()
+    with engine.connect() as con:
+        number_rows = con.execute(query).fetchone()
     query = (
         text(f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL')
         if not where_condition
@@ -125,7 +133,31 @@ def add_metadata_to_dataframe(
             f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL AND {where_condition}'
         )
     )
-    number_rows_with_coordinates = engine.connect().execute(query).fetchone()
+    with engine.connect() as con:
+        number_rows_with_coordinates = con.execute(query).fetchone()
+    query_dso_approved = (
+        text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE grid_operator_inspection = \'1\''
+        )
+        if not where_condition
+        else text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE grid_operator_inspection = \'1\' AND {where_condition}'
+        )
+    )
+    with engine.connect() as con:
+        number_rows_dso_approved = con.execute(query_dso_approved).fetchone()
+    query_dso_not_approved = (
+        text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE grid_operator_inspection = \'0\''
+        )
+        if not where_condition
+        else text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE grid_operator_inspection = \'0\' AND {where_condition}'
+        )
+    )
+    print(table)
+    with engine.connect() as con:
+        number_rows_dso_not_approved = con.execute(query_dso_not_approved).fetchone()
     table_name = table if not table_name_replacement else table_name_replacement
     metadata_df = pd.concat(
         [
@@ -135,6 +167,8 @@ def add_metadata_to_dataframe(
                     "table_name": [table_name],
                     "number_rows": [number_rows[0]],
                     "number_rows_with_coordinates": number_rows_with_coordinates[0],
+                    "number_rows_dso_approved": [number_rows_dso_approved[0]],
+                    "number_rows_dso_not_approved": [number_rows_dso_not_approved[0]],
                 }
             ),
         ],
