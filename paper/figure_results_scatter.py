@@ -42,7 +42,7 @@ def get_data():
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
         "Solar" as category
     FROM solar
-    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 0
     UNION ALL
     SELECT 
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__solar') * 100, 3) as share,
@@ -57,7 +57,7 @@ def get_data():
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 3) as share,
         "Wind" as category
     FROM wind
-    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 0
     UNION ALL
     SELECT 
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__wind') * 100, 3) as share,
@@ -72,7 +72,7 @@ def get_data():
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 3) as share,
         "Biomass" as category
     FROM biomass
-    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 0
     UNION ALL
     SELECT 
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__biomass') * 100, 3) as share,
@@ -87,7 +87,7 @@ def get_data():
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 3) as share,
         "Hydro" as category
     FROM hydro
-    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 0
     UNION ALL
     SELECT 
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__hydro') * 100, 3) as share,
@@ -101,7 +101,7 @@ def get_data():
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__combustion') * 100, 3) as share,
         "Combustion" as category
     FROM combustion
-    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 0
     UNION ALL
     SELECT 
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__combustion') * 100, 3) as share,
@@ -116,7 +116,7 @@ def get_data():
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__storages') * 100, 3) as share,
         "Storages" as category
     FROM storage
-    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb'
+    WHERE failed_test = 'point_in_area__district' AND operating_status = 'In Betrieb' AND grid_operator_inspection = 0
     UNION ALL
     SELECT 
         ROUND(CAST(COUNT(DISTINCT(mastr_id)) AS FLOAT) / (SELECT number_rows_with_coordinates FROM metadata WHERE table_name='stg_mastr__storages') * 100, 3) as share,
@@ -139,7 +139,6 @@ def get_data():
 
 
 df_inverter, df_modules, df_area, df_locations = get_data()
-
 FIG1 = True
 FIG2 = True
 FONTSIZE = 13
