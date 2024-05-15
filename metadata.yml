@@ -927,7 +927,7 @@ plugins:
         Kreisschluessel:
           name: Kreisschluessel
           type: string
-          default: 09574
+          default: "05334"
       charts:
         markdown-search:
           library: markdown
