@@ -1,7 +1,6 @@
-# verify-marktstammdaten
-Verifying and testing data in the German Energy dataset "Marktstammdatenregister"
-
-https://marktstammdaten.kotthoff.dev/
+# Monitoring Germany's Core Energy System Dataset: A Data Quality Analysis of the Marktstammdatenregister
+This is the github repository of the paper [Monitoring Germany's Core Energy System Dataset: A Data Quality Analysis of the Marktstammdatenregister](https://arxiv.org/abs/2304.10581).
+The dashboards are live at https://marktstammdaten.kotthoff.dev/
 
 ## Getting Started
 
