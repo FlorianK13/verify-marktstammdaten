@@ -5,7 +5,7 @@ The dashboards are live at https://marktstammdaten.kotthoff.dev/
 ## Getting Started
 
 1. Create a conda environment called `verify-marktstammdaten` and activate it
-1. Run `pip install -r requirements.txt`
+1. Run `pip install .`
 1. Run `datasette install datasette-dashboards`
 1. Run `docker-compose up`
 1. Run `./run_tests.sh`
