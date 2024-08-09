@@ -135,6 +135,28 @@ def add_metadata_to_dataframe(
     )
     with engine.connect() as con:
         number_rows_with_coordinates = con.execute(query).fetchone()
+
+    query_with_coords_dso_approved = (
+        text(f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL AND grid_operator_inspection = \'1\'')
+        if not where_condition
+        else text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NOT NULL AND grid_operator_inspection = \'1\' AND {where_condition}'
+        )
+    )
+    with engine.connect() as con:
+        number_rows_with_coordinates_dso_approved = con.execute(query_with_coords_dso_approved).fetchone()
+
+    query_no_coords_dso_approved = (
+        text(f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NULL AND grid_operator_inspection = \'1\'')
+        if not where_condition
+        else text(
+            f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE coordinate IS NULL AND grid_operator_inspection = \'1\' AND {where_condition}'
+        )
+    )
+    with engine.connect() as con:
+        number_rows_no_coordinates_dso_approved = con.execute(query_no_coords_dso_approved).fetchone()
+
+
     query_dso_approved = (
         text(
             f'SELECT COUNT(*) FROM "dbt"."{table}" WHERE grid_operator_inspection = \'1\''
@@ -167,6 +189,8 @@ def add_metadata_to_dataframe(
                     "table_name": [table_name],
                     "number_rows": [number_rows[0]],
                     "number_rows_with_coordinates": number_rows_with_coordinates[0],
+                    "number_rows_with_coordinates_dso_approved": [number_rows_with_coordinates_dso_approved[0]],
+                    "number_rows_no_coordinates_dso_approved": [number_rows_no_coordinates_dso_approved[0]],
                     "number_rows_dso_approved": [number_rows_dso_approved[0]],
                     "number_rows_dso_not_approved": [number_rows_dso_not_approved[0]],
                 }
