@@ -1,0 +1,1 @@
+In the first version of this paper, we did a manual analysis of coordinates. This version was rejected and critized by reviewers, hence we deleted it from the current version of the paper. However, we save the code that we used for the old version of the paper in this folder.
