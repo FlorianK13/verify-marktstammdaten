@@ -4,11 +4,41 @@ models:
     description: ""
     tests:
       - expect_column_pair_division_to_be_within:
-          name: storage_column_division__power_gross_power_inverter
+          name: storage_column_division__power_gross_power_inverter_20
           column_A: power_gross
           column_B: power_inverter
           min_value: 0.05
           max_value: 20
+      - expect_column_pair_division_to_be_within:
+          name: storage_column_division__power_gross_power_inverter_15
+          column_A: power_gross
+          column_B: power_inverter
+          min_value: 0.066
+          max_value: 15
+      - expect_column_pair_division_to_be_within:
+          name: storage_column_division__power_gross_power_inverter_10
+          column_A: power_gross
+          column_B: power_inverter
+          min_value: 0.1
+          max_value: 10
+      - expect_column_pair_division_to_be_within:
+          name: storage_column_division__power_gross_power_inverter_8
+          column_A: power_gross
+          column_B: power_inverter
+          min_value: 0.125
+          max_value: 8
+      - expect_column_pair_division_to_be_within:
+          name: storage_column_division__power_gross_power_inverter_5
+          column_A: power_gross
+          column_B: power_inverter
+          min_value: 0.2
+          max_value: 5
+      - expect_column_pair_division_to_be_within:
+          name: storage_column_division__power_gross_power_inverter_3
+          column_A: power_gross
+          column_B: power_inverter
+          min_value: 0.333333
+          max_value: 3
       - expect_column_pair_values_A_to_be_greater_than_B:
           name: storage_A_larger_B__power_gross_power_net
           column_A: power_gross
