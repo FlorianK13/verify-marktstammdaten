@@ -1,1 +1,2 @@
 datasette-dashboards
+datasette-block-robots
